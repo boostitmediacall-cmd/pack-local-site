@@ -1,11 +1,40 @@
-/* ============================================
-   PACK LOCAL — script.js
-   ============================================ */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---------- Menu burger ---------- */
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pricingCards = document.querySelectorAll('.pricing-card');
+const chooseButtons = document.querySelectorAll('.choose-pack');
+const stickyBar = document.getElementById('stickyBar');
+const stickyBarText = document.getElementById('stickyBarText');
+const stickyBarCta = document.getElementById('stickyBarCta');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalClose = document.getElementById('modalClose');
+const onboardingForm = document.getElementById('onboardingForm');
+const selectedPackField = document.getElementById('selectedPackField');
+const selectedPriceField = document.getElementById('selectedPriceField');
+const selectedPackDisplay = document.getElementById('selectedPackDisplay');
+const selectedPriceDisplay = document.getElementById('selectedPriceDisplay');
+const paymentStep = document.getElementById('paymentStep');
+const paymentSummary = document.getElementById('paymentSummary');
+const loadingState = document.getElementById('loadingState');
+const paymentError = document.getElementById('paymentError');
+const checkoutContainer = document.getElementById('checkout');
+const formFeedback = document.getElementById('formFeedback');
+const submitButton = document.getElementById('submitButton');
+const existingListingFields = document.getElementById('existingListingFields');
+const newListingMessage = document.getElementById('newListingMessage');
+const googleAccountEmail = document.getElementById('googleAccountEmail');
+const stripePublishableKey = document.querySelector('meta[name="stripe-publishable-key"]')?.content?.trim();
+
+let selectedPack = null;
+let embeddedCheckout = null;
+let lastFocusedElement = null;
+
+const PACK_LABELS = {
+  essentiel: { name: 'Essentiel', amount: 69 },
+  populaire: { name: 'Populaire', amount: 99 },
+  premium: { name: 'Premium', amount: 179 }
+};
 
 if (burger && nav) {
   const closeNav = () => {
@@ -13,211 +42,288 @@ if (burger && nav) {
     burger.setAttribute('aria-expanded', 'false');
     burger.setAttribute('aria-label', 'Ouvrir le menu');
   };
+
   burger.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('open');
-    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    burger.setAttribute('aria-expanded', String(isOpen));
     burger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
   });
-  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeNav));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeNav);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeNav();
+    }
+  });
 }
 
-/* ---------- Reveal on scroll ---------- */
 const revealEls = document.querySelectorAll('.reveal');
+
 if (reduceMotion || !('IntersectionObserver' in window)) {
-  revealEls.forEach(el => el.classList.add('in'));
-} else if (revealEls.length) {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
+  revealEls.forEach((el) => el.classList.add('in'));
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('in');
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => observer.observe(el));
+  }, { threshold: 0.15 });
+
+  revealEls.forEach((el) => observer.observe(el));
 }
 
-/* ---------- Liens Stripe par pack (à remplacer par vrais Payment Links) ---------- */
-const STRIPE_LINKS = {
-  'Essentiel': '#stripe-link-essentiel-a-remplacer',
-  'Populaire': '#stripe-link-populaire-a-remplacer',
-  'Premium':   '#stripe-link-premium-a-remplacer',
-};
+function setSelectedPack(card) {
+  const pack = card.dataset.pack;
+  const name = card.dataset.packName;
+  const price = Number(card.dataset.packPrice);
 
-/* ---------- État courant ---------- */
-let selectedPack = null; // { name, price }
+  selectedPack = { pack, name, price };
 
-/* ---------- Éléments DOM ---------- */
-const stickyBar     = document.getElementById('stickyBar');
-const stickyBarText = document.getElementById('stickyBarText');
-const stickyBarCta  = document.getElementById('stickyBarCta');
+  pricingCards.forEach((pricingCard) => pricingCard.classList.remove('selected'));
+  card.classList.add('selected');
 
-const modalOverlay  = document.getElementById('modalOverlay');
-const modalClose    = document.getElementById('modalClose');
-const stepForm      = document.getElementById('stepForm');
-const stepPayment   = document.getElementById('stepPayment');
-const stepConfirm   = document.getElementById('stepConfirm');
+  stickyBarText.textContent = `Pack ${name} selectionne · ${price}€/mois`;
+  stickyBar.hidden = false;
+  document.body.classList.add('sticky-visible');
+}
 
-const modalPackName   = document.getElementById('modalPackName');
-const paymentPackName = document.getElementById('paymentPackName');
-const paymentAmount   = document.getElementById('paymentAmount');
-const stripeContainer = document.getElementById('stripeContainer');
+chooseButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const card = button.closest('.pricing-card');
+    if (!card) {
+      return;
+    }
 
-const onboardingForm      = document.getElementById('onboardingForm');
-const formPack            = document.getElementById('formPack');
-const formPrix            = document.getElementById('formPrix');
+    setSelectedPack(card);
+  });
+});
 
-const ficheOui            = document.getElementById('ficheOui');
-const ficheNon            = document.getElementById('ficheNon');
-const ficheExistanteFields= document.getElementById('ficheExistanteFields');
-const ficheCreationMsg    = document.getElementById('ficheCreationMsg');
-const emailGoogleInput    = document.getElementById('emailGoogle');
+function updateListingFields() {
+  const selectedStatus = onboardingForm?.querySelector('input[name="google_listing_status"]:checked')?.value;
+  const isExisting = selectedStatus === 'existing';
+  const isNew = selectedStatus === 'new';
 
-/* ---------- Helpers modal ---------- */
+  existingListingFields.hidden = !isExisting;
+  newListingMessage.hidden = !isNew;
+  googleAccountEmail.required = isExisting;
+}
+
+onboardingForm?.querySelectorAll('input[name="google_listing_status"]').forEach((input) => {
+  input.addEventListener('change', updateListingFields);
+});
+
+function syncSelectedPackToForm() {
+  if (!selectedPack) {
+    return;
+  }
+
+  selectedPackField.value = selectedPack.pack;
+  selectedPriceField.value = `${selectedPack.price}€/mois HT`;
+  selectedPackDisplay.textContent = selectedPack.name;
+  selectedPriceDisplay.textContent = `${selectedPack.price}€/mois HT`;
+  paymentSummary.textContent = `Pack ${selectedPack.name} · ${selectedPack.price}€/mois HT`;
+}
+
 function openModal() {
+  if (!selectedPack) {
+    return;
+  }
+
+  syncSelectedPackToForm();
+  lastFocusedElement = document.activeElement;
   modalOverlay.hidden = false;
   document.body.style.overflow = 'hidden';
   modalClose.focus();
 }
-function closeModal() {
+
+async function teardownEmbeddedCheckout() {
+  if (embeddedCheckout && typeof embeddedCheckout.destroy === 'function') {
+    await embeddedCheckout.destroy();
+  }
+  embeddedCheckout = null;
+  checkoutContainer.innerHTML = '';
+}
+
+async function closeModal() {
   modalOverlay.hidden = true;
   document.body.style.overflow = '';
-  // Réinitialiser
-  showStep(stepForm);
-  if (onboardingForm) onboardingForm.reset();
-  ficheExistanteFields.hidden = true;
-  ficheCreationMsg.hidden = true;
-}
-function showStep(stepEl) {
-  [stepForm, stepPayment, stepConfirm].forEach(s => s.hidden = (s !== stepEl));
-}
+  paymentStep.hidden = true;
+  paymentError.hidden = true;
+  paymentError.textContent = '';
+  loadingState.hidden = true;
+  formFeedback.textContent = '';
+  submitButton.disabled = false;
+  await teardownEmbeddedCheckout();
 
-/* ---------- Clic sur "Choisir [pack]" ---------- */
-document.querySelectorAll('.plan-cta').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.offer-card');
-    const name  = card.dataset.packName;
-    const price = card.dataset.packPrice;
-
-    selectedPack = { name, price };
-
-    // Surligner la carte
-    document.querySelectorAll('.offer-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-
-    // Sticky bar
-    stickyBarText.textContent = 'Pack ' + name + ' sélectionné · ' + price + '€ HT/mois';
-    stickyBar.classList.add('visible');
-  });
-});
-
-/* ---------- Clic "Continuer" (sticky bar) → ouvre modale ---------- */
-if (stickyBarCta) {
-  stickyBarCta.addEventListener('click', () => {
-    if (!selectedPack) return;
-    // Pré-remplir modale
-    modalPackName.textContent = selectedPack.name;
-    if (formPack)  formPack.value  = selectedPack.name;
-    if (formPrix)  formPrix.value  = selectedPack.price + '€ HT/mois';
-    showStep(stepForm);
-    openModal();
-  });
-}
-
-/* ---------- Fermeture modale ---------- */
-if (modalClose) modalClose.addEventListener('click', closeModal);
-if (modalOverlay) {
-  modalOverlay.addEventListener('click', e => {
-    if (e.target === modalOverlay) closeModal();
-  });
-}
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && modalOverlay && !modalOverlay.hidden) closeModal();
-});
-
-/* ---------- Logique conditionnelle fiche Google ---------- */
-function toggleFicheFields() {
-  const hasExisting = ficheOui && ficheOui.checked;
-  const noFiche     = ficheNon && ficheNon.checked;
-
-  ficheExistanteFields.hidden = !hasExisting;
-  ficheCreationMsg.hidden     = !noFiche;
-
-  // Rendre emailGoogle obligatoire uniquement si fiche existante
-  if (emailGoogleInput) {
-    emailGoogleInput.required = hasExisting;
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+    lastFocusedElement.focus();
   }
 }
 
-if (ficheOui) ficheOui.addEventListener('change', toggleFicheFields);
-if (ficheNon) ficheNon.addEventListener('change', toggleFicheFields);
-
-/* ---------- Soumission du formulaire → afficher paiement ---------- */
-if (onboardingForm) {
-  onboardingForm.addEventListener('submit', async e => {
-    e.preventDefault();
-
-    // Validation basique
-    const required = onboardingForm.querySelectorAll('[required]');
-    let valid = true;
-    required.forEach(field => {
-      if (!field.value.trim()) {
-        field.classList.add('invalid');
-        valid = false;
-      } else {
-        field.classList.remove('invalid');
-      }
-    });
-    if (!valid) return;
-
-    // Envoi à Netlify Forms (fetch silencieux)
-    try {
-      const data = new FormData(onboardingForm);
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString(),
-      });
-    } catch (_) {
-      // On continue même si l'envoi échoue — Netlify le récupérera côté serveur
-    }
-
-    // Afficher étape paiement
-    paymentPackName.textContent = selectedPack.name;
-    paymentAmount.textContent   = selectedPack.price + '€';
-
-    // Injecter le bouton Stripe Payment Link
-    const stripeHref = STRIPE_LINKS[selectedPack.name] || '#';
-    stripeContainer.innerHTML = '';
-    const stripeBtn = document.createElement('a');
-    stripeBtn.href      = stripeHref;
-    stripeBtn.className = 'stripe-btn';
-    stripeBtn.textContent = 'Payer ' + selectedPack.price + '€ HT/mois →';
-    // Si c'est un vrai lien Stripe, ouvrir dans le même onglet (pas de _blank pour le tunnel)
-    stripeContainer.appendChild(stripeBtn);
-
-    showStep(stepPayment);
-  });
-}
-
-/* ---------- Accessibilité : focus trap dans la modale ---------- */
-if (modalOverlay) {
-  modalOverlay.addEventListener('keydown', e => {
-    if (e.key !== 'Tab') return;
-    const focusable = modalOverlay.querySelectorAll(
-      'button:not([disabled]), input:not([disabled]), select, textarea, a[href], [tabindex]:not([tabindex="-1"])'
-    );
-    const first = focusable[0];
-    const last  = focusable[focusable.length - 1];
-    if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
-      e.preventDefault();
-      (e.shiftKey ? last : first).focus();
-    }
-  });
-}
-
-/* ---------- Retirer le style "invalid" à la saisie ---------- */
-document.querySelectorAll('.onboarding-form input').forEach(input => {
-  input.addEventListener('input', () => input.classList.remove('invalid'));
+stickyBarCta?.addEventListener('click', openModal);
+modalClose?.addEventListener('click', () => {
+  closeModal();
 });
+
+modalOverlay?.addEventListener('click', (event) => {
+  if (event.target === modalOverlay) {
+    closeModal();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !modalOverlay.hidden) {
+    closeModal();
+  }
+});
+
+function validateForm() {
+  if (!onboardingForm) {
+    return false;
+  }
+
+  let isValid = true;
+  formFeedback.textContent = '';
+
+  const requiredFields = onboardingForm.querySelectorAll('input[required]');
+  requiredFields.forEach((field) => {
+    const shouldCheckValue = field.type !== 'radio';
+    const fieldValid = field.type === 'radio'
+      ? onboardingForm.querySelector(`input[name="${field.name}"]:checked`)
+      : field.value.trim();
+
+    if (!fieldValid) {
+      isValid = false;
+      if (shouldCheckValue) {
+        field.classList.add('invalid');
+      }
+    } else if (shouldCheckValue) {
+      field.classList.remove('invalid');
+    }
+  });
+
+  if (!isValid) {
+    formFeedback.textContent = 'Merci de remplir tous les champs obligatoires avant de continuer.';
+  }
+
+  return isValid;
+}
+
+async function submitNetlifyForm(formData) {
+  await fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(formData).toString()
+  });
+}
+
+async function mountEmbeddedCheckout(clientSecret) {
+  if (!stripePublishableKey) {
+    throw new Error('La cle publique Stripe est absente. Renseignez-la dans la balise meta "stripe-publishable-key".');
+  }
+
+  if (typeof window.Stripe !== 'function') {
+    throw new Error('Stripe.js n a pas pu etre charge.');
+  }
+
+  const stripe = window.Stripe(stripePublishableKey);
+  embeddedCheckout = await stripe.initEmbeddedCheckout({ clientSecret });
+  embeddedCheckout.mount('#checkout');
+}
+
+async function createCheckoutSession(payload) {
+  const response = await fetch('/.netlify/functions/create-checkout-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error || 'Impossible de creer la session de paiement.');
+  }
+
+  return data.client_secret;
+}
+
+onboardingForm?.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  if (!selectedPack || !validateForm()) {
+    return;
+  }
+
+  submitButton.disabled = true;
+  loadingState.hidden = false;
+  paymentError.hidden = true;
+  paymentError.textContent = '';
+  paymentStep.hidden = false;
+
+  const formData = new FormData(onboardingForm);
+  const payload = {
+    pack: selectedPack.pack,
+    formData: Object.fromEntries(formData.entries())
+  };
+
+  try {
+    await teardownEmbeddedCheckout();
+    await submitNetlifyForm(formData);
+    const clientSecret = await createCheckoutSession(payload);
+    await mountEmbeddedCheckout(clientSecret);
+  } catch (error) {
+    paymentError.hidden = false;
+    paymentError.textContent = error.message || 'Une erreur est survenue lors de la creation du paiement.';
+  } finally {
+    loadingState.hidden = true;
+    submitButton.disabled = false;
+  }
+});
+
+onboardingForm?.querySelectorAll('input').forEach((input) => {
+  input.addEventListener('input', () => {
+    input.classList.remove('invalid');
+    if (formFeedback.textContent) {
+      formFeedback.textContent = '';
+    }
+  });
+});
+
+modalOverlay?.addEventListener('keydown', (event) => {
+  if (event.key !== 'Tab') {
+    return;
+  }
+
+  const focusable = modalOverlay.querySelectorAll(
+    'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+  );
+
+  if (!focusable.length) {
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+if (window.location.pathname.endsWith('/merci.html')) {
+  const packFromQuery = new URLSearchParams(window.location.search).get('pack');
+  const label = PACK_LABELS[packFromQuery];
+  const thanksPack = document.getElementById('thanksPack');
+  if (label && thanksPack) {
+    thanksPack.textContent = `Votre formule ${label.name} a bien ete prise en compte.`;
+  }
+}

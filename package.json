@@ -1,0 +1,10 @@
+{
+  "name": "pack-local",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Landing page Pack Local avec functions Netlify Stripe et Resend.",
+  "dependencies": {
+    "resend": "^4.0.1",
+    "stripe": "^18.4.0"
+  }
+}

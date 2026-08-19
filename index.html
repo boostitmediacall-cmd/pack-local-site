@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack Local — Visibilité locale sur Google pour les commerces et artisans</title>
-<meta name="description" content="Pack Local s'occupe de votre fiche Google : optimisation, avis clients, publications et suivi mensuel. Vous faites votre métier, nous nous occupons de votre visibilité locale.">
+<title>Pack Local — Visibilité Google Maps et gestion de fiche Google</title>
+<meta name="description" content="Pack Local prend en charge votre fiche Google : optimisation complète, gestion des avis, publications régulières et suivi mensuel, avec paiement en ligne intégré.">
 <meta name="robots" content="index,follow">
+<meta name="stripe-publishable-key" content="">
 
-<!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y6CL1MT94D"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -18,29 +18,25 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,450;1,9..144,600;1,9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,450;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 
-<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
 <header class="site-header" id="top">
   <div class="wrap header-inner">
-    <a class="logo" href="#top">
+    <a class="logo" href="#top" aria-label="Pack Local">
       <span class="logo-pin" aria-hidden="true"></span>
-      Pack Local
+      <span>Pack Local</span>
     </a>
     <nav class="nav" id="nav" aria-label="Navigation principale">
       <a href="#offres">Offres</a>
       <a href="#methode">Méthode</a>
-      <a href="#avis">Avant / Après</a>
+      <a href="#comparatif">Avis</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <div class="header-cta">
-      <a class="btn btn-gradient" href="#offres">Voir les offres</a>
-    </div>
+    <a class="btn btn-gradient header-button" href="#offres">Voir les offres</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
       <span></span><span></span><span></span>
     </button>
@@ -48,292 +44,161 @@
 </header>
 
 <main id="contenu">
-
-  <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
-  <section class="hero">
-    <div class="wrap">
+  <section class="hero section">
+    <div class="wrap hero-grid">
       <div class="hero-copy">
         <div class="pin-wrap">
           <div class="pin" aria-hidden="true"></div>
         </div>
-        <p class="eyebrow">VISIBILITÉ LOCALE SUR GOOGLE</p>
-        <h1>Soyez plus visible sur Google Maps, et attirez plus de clients <em class="word-gradient">près de chez vous</em>.</h1>
-        <p class="hero-sub">Pack Local s'occupe de votre fiche Google&nbsp;: optimisation, avis clients, publications et suivi mensuel. Vous faites votre métier, nous nous occupons de votre visibilité locale.</p>
+        <p class="eyebrow">SEO LOCAL &amp; FICHE GOOGLE BUSINESS PROFILE</p>
+        <h1>Soyez plus visible sur Google Maps, et attirez plus de clients près de chez vous.</h1>
+        <p class="hero-sub">Pack Local prend en charge votre fiche Google : optimisation complète, gestion des avis clients, publications régulières et suivi mensuel. Vous n'avez rien à faire techniquement — on s'occupe de tout.</p>
         <div class="hero-actions">
           <a class="btn btn-gradient btn-lg" href="#offres">Voir les offres</a>
-          <a class="btn btn-outline btn-lg" href="#calendly-link-a-remplacer">Demander mon audit gratuit</a>
         </div>
-        <ul class="badges">
-          <li><span class="dot green" aria-hidden="true"></span>Aucun faux avis</li>
-          <li><span class="dot red" aria-hidden="true"></span>Aucun classement Google garanti</li>
-          <li><span class="dot blue" aria-hidden="true"></span>Engagement 3 mois minimum</li>
-          <li><span class="dot yellow" aria-hidden="true"></span>Gestion complète de votre fiche</li>
-        </ul>
+        <p class="trust-line">
+          <span><i class="dot green" aria-hidden="true"></i>Aucun faux avis : uniquement vos vrais clients</span>
+          <span><i class="dot blue" aria-hidden="true"></i>Mise en place rapide après inscription</span>
+          <span><i class="dot yellow" aria-hidden="true"></i>Un rapport clair chaque mois</span>
+        </p>
       </div>
-
       <figure class="hero-visual">
-        <div class="hero-shot">
-          <img
-            src="images/classement-top1-google-maps.png"
-            alt="Exemple d'affichage d'une fiche bien positionnée sur Google Maps."
-            width="1480"
-            height="1063"
-            loading="lazy"
-            decoding="async">
+        <div class="hero-card">
+          <img src="images/classement-top1-google-maps.png" alt="Exemple d'affichage d'une fiche bien positionnée sur Google Maps." width="1480" height="1063" loading="lazy" decoding="async">
         </div>
-        <figcaption class="hero-caption">Exemple d'affichage d'une fiche bien positionnée sur Google Maps — illustration, pas une garantie de résultat.</figcaption>
+        <figcaption class="visual-caption">Exemple d'affichage d'une fiche bien positionnée sur Google Maps — illustration, pas une garantie de résultat.</figcaption>
       </figure>
     </div>
   </section>
 
-  <!-- ═══════════════════════════ OFFRES ═══════════════════════════ -->
-  <section class="offers" id="offres">
+  <section class="offers section" id="offres">
     <div class="wrap">
-      <p class="eyebrow">Nos formules</p>
-      <h2 class="reveal">Trois formules, un prix simple, sans engagement caché</h2>
-
-      <div class="offers-grid">
-
-        <!-- Essentiel -->
-        <article class="offer-card reveal" data-pack="essentiel" data-pack-name="Essentiel" data-pack-price="69">
+      <p class="eyebrow">Offres</p>
+      <h2 class="section-title reveal">Choisissez la formule qui correspond au rythme de votre établissement.</h2>
+      <div class="pricing-grid">
+        <article class="pricing-card reveal" data-pack="essentiel" data-pack-name="Essentiel" data-pack-price="69">
+          <p class="card-kicker">Pour poser des bases solides sur une fiche existante</p>
           <h3>Essentiel</h3>
-          <p class="offer-desc">Pour mettre votre fiche Google au propre et partir sur de bonnes bases</p>
-          <p class="price"><span class="amount">69&nbsp;€</span><span class="period">HT/mois</span></p>
-          <ul class="offer-list">
+          <p class="price"><span>69€</span><small>HT/mois</small></p>
+          <ul class="feature-list">
             <li>Mise en place initiale de votre fiche (catégories, description, horaires, photos)</li>
             <li>Réponse à tous les avis que vous recevez</li>
             <li>4 publications sur votre fiche chaque mois</li>
             <li>Rapport simple chaque mois (vues, appels, itinéraires)</li>
-            <li>Kit QR Code / chevalet de comptoir offert <em class="offer-precision">(fichier prêt à imprimer, pour orienter vos clients vers votre fiche Google)</em></li>
+            <li>Kit QR Code / chevalet de comptoir offert (fichier prêt à imprimer, pour orienter vos clients vers votre fiche Google)</li>
           </ul>
-          <button class="btn btn-outline btn-block plan-cta">Choisir Essentiel</button>
+          <button class="btn btn-outline btn-block choose-pack" type="button">Choisir Essentiel</button>
         </article>
 
-        <!-- Populaire -->
-        <article class="offer-card featured reveal" data-pack="populaire" data-pack-name="Populaire" data-pack-price="99">
-          <p class="offer-tag">⭐ Le plus choisi</p>
+        <article class="pricing-card featured reveal" data-pack="populaire" data-pack-name="Populaire" data-pack-price="99">
+          <p class="featured-badge">⭐ Le plus choisi</p>
+          <p class="card-kicker">Pour obtenir plus d'avis et plus de visibilité, sans y passer de temps</p>
           <h3>Populaire</h3>
-          <p class="offer-desc">Pour obtenir plus d'avis et plus de visibilité, sans y passer de temps</p>
-          <p class="price"><span class="amount">99&nbsp;€</span><span class="period">HT/mois</span></p>
-          <p class="offer-includes">Tout Essentiel, plus&nbsp;:</p>
-          <ul class="offer-list">
-            <li>Jusqu'à 15 à 20 demandes d'avis envoyées chaque mois à de vrais clients après une prestation</li>
-            <li class="offer-note-item">Le nombre de demandes dépend du volume de clients que vous nous transmettez. Aucun avis n'est garanti.</li>
+          <p class="price"><span>99€</span><small>HT/mois</small></p>
+          <p class="includes">Tout Essentiel, plus :</p>
+          <ul class="feature-list">
+            <li>Demande d'avis envoyée chaque mois à 15 à 20 de vos vrais clients</li>
+            <li>Nombre de demandes envoyées, pas une garantie sur le nombre d'avis obtenus</li>
             <li>Réponse à vos avis sous 48h</li>
             <li>8 publications par mois (au lieu de 4)</li>
             <li>Un appel vidéo de 15 minutes chaque mois pour faire le point ensemble</li>
           </ul>
-          <button class="btn btn-gradient btn-block plan-cta">Choisir Populaire</button>
+          <button class="btn btn-gradient btn-block choose-pack" type="button">Choisir Populaire</button>
         </article>
 
-        <!-- Premium -->
-        <article class="offer-card reveal" data-pack="premium" data-pack-name="Premium" data-pack-price="179">
+        <article class="pricing-card reveal" data-pack="premium" data-pack-name="Premium" data-pack-price="179">
+          <p class="card-kicker">Pour un accompagnement complet, avec un interlocuteur dédié</p>
           <h3>Premium</h3>
-          <p class="offer-desc">Pour un accompagnement complet, avec un interlocuteur dédié</p>
-          <p class="price"><span class="amount">179&nbsp;€</span><span class="period">HT/mois</span></p>
-          <p class="offer-includes">Tout Populaire, plus&nbsp;:</p>
-          <ul class="offer-list">
-            <li>Demandes d'avis adaptées au volume réel de votre activité</li>
+          <p class="price"><span>179€</span><small>HT/mois</small></p>
+          <p class="includes">Tout Populaire, plus :</p>
+          <ul class="feature-list">
+            <li>Demandes d'avis envoyées sans limite fixe, ajustées à votre volume réel de clients</li>
+            <li>Jamais d'achat ni de fabrication d'avis</li>
             <li>Réponse à vos avis sous 24h</li>
             <li>12 publications par mois (au lieu de 8)</li>
-            <li>Un interlocuteur dédié + support WhatsApp prioritaire</li>
-            <li>Besoin d'une validation vidéo Google ou d'une intervention sur place&nbsp;? Nous organisons cela avec notre réseau local en France.</li>
+            <li>Un interlocuteur dédié + réponses prioritaires par WhatsApp</li>
+            <li>Validation vidéo Google &amp; déplacement terrain gérés si besoin, grâce à notre réseau d'ambassadeurs en France</li>
           </ul>
-          <button class="btn btn-outline btn-block plan-cta">Choisir Premium</button>
+          <button class="btn btn-outline btn-block choose-pack" type="button">Choisir Premium</button>
         </article>
-
       </div>
-
-      <!-- Réassurance + engagement -->
-      <div class="offer-reassurance reveal">
-        <p>Aucun faux avis, aucun avis acheté et aucune récompense en échange d'un avis. Nous travaillons uniquement avec les vrais clients de votre entreprise.</p>
-        <p>Nous ne promettons jamais une position précise sur Google.</p>
-        <p class="offer-engagement"><strong>Engagement&nbsp;: 3 mois minimum</strong>, puis résiliable à tout moment.</p>
-        <p>Option 6 mois&nbsp;: 5 mois payés + 1 mois offert. Frais de mise en place offerts.</p>
-        <p class="offer-engagement-detail">Frais de mise en place&nbsp;: 99 à 149&nbsp;€ selon la formule, facturés une fois à l'inscription. L'audit gratuit de 15-20 minutes reste sans engagement et entièrement gratuit.</p>
-      </div>
-
+      <p class="offer-note reveal">Aucune garantie de résultat fictive : nous ne promettons jamais une position précise sur Google. 100% conforme à la loi française et aux règles Google sur les avis clients. Sans engagement de durée : vous pouvez arrêter à tout moment.</p>
     </div>
   </section>
 
-  <!-- ═══════════════ STICKY BAR (cachée par défaut) ═══════════════ -->
-  <div class="sticky-bar" id="stickyBar" role="region" aria-live="polite" aria-label="Récapitulatif pack sélectionné">
-    <span class="sticky-bar-text" id="stickyBarText"></span>
-    <button class="btn btn-gradient sticky-bar-cta" id="stickyBarCta">Continuer →</button>
-  </div>
-
-  <!-- ═══════════════ MODALE ONBOARDING ═══════════════ -->
-  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
-    <div class="modal">
-      <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
-
-      <!-- Étape 1 : formulaire -->
-      <div id="stepForm">
-        <h2 class="modal-title" id="modalTitle">Inscription — Pack <span id="modalPackName"></span></h2>
-        <p class="modal-subtitle">Remplissez le formulaire ci-dessous, puis procédez au paiement.</p>
-
-        <form class="onboarding-form" id="onboardingForm" name="onboarding" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
-          <input type="hidden" name="form-name" value="onboarding">
-          <input type="hidden" name="pack" id="formPack">
-          <input type="hidden" name="prix" id="formPrix">
-          <p hidden><label>Ne pas remplir&nbsp;: <input name="bot-field"></label></p>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="prenom">Prénom <span aria-hidden="true">*</span></label>
-              <input type="text" id="prenom" name="prenom" required autocomplete="given-name">
-            </div>
-            <div class="form-group">
-              <label for="nom">Nom <span aria-hidden="true">*</span></label>
-              <input type="text" id="nom" name="nom" required autocomplete="family-name">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="etablissement">Nom de l'établissement <span aria-hidden="true">*</span></label>
-            <input type="text" id="etablissement" name="etablissement" required autocomplete="organization">
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="email">Email <span aria-hidden="true">*</span></label>
-              <input type="email" id="email" name="email" required autocomplete="email">
-            </div>
-            <div class="form-group">
-              <label for="tel">Téléphone <span aria-hidden="true">*</span></label>
-              <input type="tel" id="tel" name="tel" required autocomplete="tel">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="ville">Ville / Code postal <span aria-hidden="true">*</span></label>
-            <input type="text" id="ville" name="ville" required autocomplete="postal-code">
-          </div>
-
-          <!-- Sélecteur fiche existante ou non -->
-          <fieldset class="form-fieldset">
-            <legend>Avez-vous déjà une fiche Google ? <span aria-hidden="true">*</span></legend>
-            <label class="radio-label">
-              <input type="radio" name="fiche_google" value="oui" id="ficheOui" required>
-              J'ai déjà une fiche Google
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="fiche_google" value="non" id="ficheNon">
-              Je n'ai pas encore de fiche Google (création de zéro)
-            </label>
-          </fieldset>
-
-          <!-- Champs conditionnels : fiche existante -->
-          <div id="ficheExistanteFields" class="conditional-fields" hidden>
-            <div class="form-group">
-              <label for="emailGoogle">Email Google associé au compte de votre fiche <span aria-hidden="true">*</span></label>
-              <p class="form-hint">Nécessaire pour vous inviter en tant que gestionnaire.</p>
-              <input type="email" id="emailGoogle" name="email_google" autocomplete="off">
-            </div>
-            <div class="form-group">
-              <label for="lienFiche">Lien de votre fiche Google <span class="optional">(optionnel)</span></label>
-              <input type="url" id="lienFiche" name="lien_fiche" placeholder="https://maps.google.com/...">
-            </div>
-          </div>
-
-          <!-- Message conditionnel : création de zéro -->
-          <div id="ficheCreationMsg" class="form-info-box" hidden>
-            <p>Nous créerons votre fiche Google pour vous. Une vérification Google sera nécessaire ensuite (par courrier, téléphone ou vidéo selon les cas) — nous vous guidons à chaque étape.</p>
-          </div>
-
-          <button type="submit" class="btn btn-gradient btn-block form-submit">Valider et passer au paiement →</button>
-        </form>
-      </div>
-
-      <!-- Étape 2 : paiement Stripe (affiché après soumission du formulaire) -->
-      <div id="stepPayment" hidden>
-        <h2 class="modal-title">Paiement — Pack <span id="paymentPackName"></span></h2>
-        <p class="modal-subtitle">Montant&nbsp;: <strong id="paymentAmount"></strong> HT/mois</p>
-        <div id="stripeContainer" class="stripe-container">
-          <!-- Le bouton Stripe Payment Link est injecté ici par script.js -->
-        </div>
-        <p class="payment-note">Paiement sécurisé via Stripe. Vous recevrez une confirmation par email.</p>
-      </div>
-
-      <!-- Étape 3 : confirmation -->
-      <div id="stepConfirm" hidden>
-        <div class="confirm-icon" aria-hidden="true">✓</div>
-        <h2 class="modal-title">Merci&nbsp;!</h2>
-        <p class="modal-subtitle">Votre inscription a bien été enregistrée. Nous vous contactons sous 24 à 48h pour démarrer la mise en place de votre fiche.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════ STATS ═══════════════════════════ -->
-  <section class="stats" aria-label="Chiffres clés">
+  <section class="stats section" aria-labelledby="stats-title">
     <div class="wrap">
-      <div class="stats-grid stats-grid-3">
-        <div class="stat reveal">
-          <span class="num blue">46&nbsp;%</span>
-          <p>des recherches Google ont une intention locale. <em class="stat-source">(Source&nbsp;: Google, "Understanding Consumers' Local Search Behavior")</em></p>
-        </div>
-        <div class="stat reveal">
-          <span class="num red">3</span>
+      <p class="eyebrow">Chiffres utiles</p>
+      <h2 class="section-title reveal" id="stats-title">Pourquoi la fiche Google compte autant pour un commerce local.</h2>
+      <div class="stats-grid">
+        <article class="stat-card reveal blue-wash">
+          <span class="stat-value blue">46%</span>
+          <p>des recherches Google ont une intention locale. <span class="stat-source">Source : Google</span></p>
+        </article>
+        <article class="stat-card reveal red-wash">
+          <span class="stat-value red">3</span>
           <p>c'est le nombre de fiches affichées en tête des résultats Google Maps (le "Local Pack"). Elles reçoivent généralement le plus de vues et de clics.</p>
-        </div>
-        <div class="stat reveal">
-          <span class="num yellow">76&nbsp;%</span>
-          <p>des personnes qui font une recherche "près de moi" visitent une entreprise dans les 24h. <em class="stat-source">(Source&nbsp;: Think with Google, "How intent is redefining the marketing funnel")</em></p>
-        </div>
+        </article>
+        <article class="stat-card reveal yellow-wash">
+          <span class="stat-value yellow">76%</span>
+          <p>des personnes qui font une recherche "près de moi" visitent une entreprise dans les 24h. <span class="stat-source">Source : Google / Think with Google</span></p>
+        </article>
+        <article class="stat-card reveal green-wash">
+          <span class="stat-value green">97%</span>
+          <p>des consommateurs consultent les avis en ligne avant de choisir une entreprise locale. <span class="stat-source">Source : BrightLocal, étude 2026</span></p>
+        </article>
       </div>
-      <p class="stats-note">Chiffres sectoriels, donnés à titre indicatif. Les résultats varient selon l'activité, la zone géographique et la concurrence.</p>
+      <p class="section-footnote">Chiffres sectoriels, non spécifiques à votre activité — donnés à titre indicatif.</p>
     </div>
   </section>
 
-  <!-- ═══════════════════════════ MÉTHODE ═══════════════════════════ -->
-  <section class="method" id="methode">
+  <section class="method section" id="methode">
     <div class="wrap">
-      <p class="eyebrow">La méthode</p>
-      <h2 class="reveal">Ce qu'on fait pour vous, et ce qui reste de votre côté</h2>
-      <p class="section-lead reveal">On s'occupe de votre fiche Google du début à la fin. De votre côté, il y a seulement deux choses à faire&nbsp;: valider les informations de votre entreprise au démarrage, et nous permettre de contacter vos vrais clients après une prestation réelle pour leur proposer de laisser un avis. Nous ne créons, n'achetons et ne garantissons jamais d'avis.</p>
-
-      <div class="pillars">
-        <article class="pillar reveal">
-          <span class="dot blue lg" aria-hidden="true"></span>
+      <p class="eyebrow">Méthode</p>
+      <h2 class="section-title reveal">Ce qu'on fait pour vous, et ce qui reste de votre côté</h2>
+      <p class="section-intro reveal">On s'occupe de votre fiche Google du début à la fin. De votre côté, il y a seulement deux choses à faire : valider les informations de votre entreprise au démarrage, et nous transmettre les coordonnées de vos clients satisfaits pour leur demander un avis.</p>
+      <div class="method-grid">
+        <article class="method-card reveal blue-wash">
+          <span class="dot blue large" aria-hidden="true"></span>
           <h3>Fiche Google optimisée</h3>
-          <p>Nous corrigeons et complétons chaque élément de votre fiche&nbsp;: catégories, description, horaires, services, photos, publications. Nous vérifions également que les informations importantes correspondent à celles affichées sur votre site et vos autres profils professionnels.</p>
+          <p>Nous corrigeons et complétons chaque élément de votre fiche : catégories, description, horaires, services, photos, publications. Tout est mis en cohérence avec vos autres présences en ligne (site, réseaux sociaux).</p>
         </article>
-        <article class="pillar reveal">
-          <span class="dot yellow lg" aria-hidden="true"></span>
+        <article class="method-card reveal yellow-wash">
+          <span class="dot yellow large" aria-hidden="true"></span>
           <h3>Pack Avis</h3>
-          <p>Nous vous aidons à demander un avis à vos vrais clients après une prestation réelle, avec un système simple à mettre en place. Nous répondons aux avis selon le délai prévu par votre formule. Aucun faux avis, aucun avis acheté ou inventé.</p>
+          <p>Nous vous aidons à demander un avis à vos vrais clients après une prestation réelle, avec un système simple à mettre en place. Nous répondons à vos avis selon le délai prévu par votre formule. Aucun faux avis, aucun avis inventé — jamais.</p>
         </article>
-        <article class="pillar reveal">
-          <span class="dot green lg" aria-hidden="true"></span>
+        <article class="method-card reveal green-wash">
+          <span class="dot green large" aria-hidden="true"></span>
           <h3>Suivi mensuel</h3>
-          <p>Chaque mois, vous recevez un rapport clair&nbsp;: combien de personnes ont vu votre fiche, combien vous ont appelé, combien ont demandé leur itinéraire, combien ont cliqué vers votre site, et comment évolue votre visibilité dans les résultats locaux.</p>
+          <p>Chaque mois, vous recevez un rapport clair : combien de personnes ont vu votre fiche, combien vous ont appelé, combien ont demandé leur itinéraire, combien ont cliqué vers votre site, et comment évolue votre visibilité dans les résultats locaux.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════ PROCESS ═══════════════════════════ -->
-  <section class="process" aria-label="Comment ça se passe concrètement">
+  <section class="process section" aria-labelledby="process-title">
     <div class="wrap">
       <p class="eyebrow">Comment ça se passe concrètement</p>
-      <ol class="process-list">
+      <h2 class="section-title reveal" id="process-title">Un parcours simple, direct et entièrement en ligne.</h2>
+      <ol class="process-grid">
         <li class="reveal">
-          <span class="step">01</span>
+          <span class="step-number">01</span>
           <h3>Vous choisissez votre formule et payez en ligne</h3>
           <p>Un court formulaire (votre établissement, si vous avez déjà une fiche Google ou non) puis le paiement, directement sur le site, en quelques minutes.</p>
         </li>
         <li class="reveal">
-          <span class="step">02</span>
+          <span class="step-number">02</span>
           <h3>Mise en place initiale</h3>
           <p>Nous optimisons chaque champ de votre fiche Google, ou nous la créons de zéro si vous n'en avez pas encore.</p>
         </li>
         <li class="reveal">
-          <span class="step">03</span>
+          <span class="step-number">03</span>
           <h3>Activation avis &amp; publications</h3>
           <p>Selon la formule choisie, nous mettons en place la demande d'avis et publions régulièrement sur votre fiche.</p>
         </li>
         <li class="reveal">
-          <span class="step">04</span>
+          <span class="step-number">04</span>
           <h3>Suivi mensuel</h3>
           <p>Vous recevez un rapport chaque mois, avec les ajustements nécessaires.</p>
         </li>
@@ -341,127 +206,218 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════ CTA MILIEU ═══════════════════════════ -->
-  <section class="cta-mid">
-    <div class="wrap cta-mid-inner reveal">
-      <h2>Prêt à améliorer votre visibilité sur Google Maps&nbsp;?</h2>
+  <section class="cta-band section">
+    <div class="wrap cta-band-inner reveal">
+      <h2>Prêt à améliorer votre visibilité sur Google Maps ?</h2>
       <a class="btn btn-gradient btn-lg" href="#offres">Voir les offres</a>
     </div>
   </section>
 
-  <!-- ═══════════════════════════ AVANT / APRÈS ═══════════════════════════ -->
-  <section class="before-after" id="avis">
+  <section class="comparison section" id="comparatif">
     <div class="wrap">
-      <p class="eyebrow">Avant / Après</p>
-      <h2 class="reveal">Ce que l'optimisation change concrètement</h2>
-      <p class="section-lead reveal">Pack Local est un service tout récent, nous n'avons pas encore de vrais cas clients à montrer — voici en revanche, très concrètement, ce qui change sur une fiche Google entre l'état initial et l'état optimisé.</p>
-
-      <div class="ba-grid">
-
-        <div class="ba-card ba-before reveal">
-          <p class="ba-label">Fiche non optimisée</p>
-          <ul class="ba-list">
-            <li><span class="ba-icon bad" aria-hidden="true">✗</span> Catégorie générique (ex&nbsp;: "Restaurant")</li>
-            <li><span class="ba-icon bad" aria-hidden="true">✗</span> Description vide ou absente</li>
-            <li><span class="ba-icon bad" aria-hidden="true">✗</span> Aucune photo ou photos non mises à jour</li>
-            <li><span class="ba-icon bad" aria-hidden="true">✗</span> 0 avis récent, aucune réponse aux anciens</li>
-            <li><span class="ba-icon bad" aria-hidden="true">✗</span> Aucune publication sur la fiche</li>
-            <li><span class="ba-icon bad" aria-hidden="true">✗</span> Horaires incorrects ou manquants</li>
+      <p class="eyebrow">Sans Pack Local / Avec Pack Local</p>
+      <h2 class="section-title reveal">Sans Pack Local, avec Pack Local</h2>
+      <p class="section-intro reveal">Pack Local est un service tout récent, nous n'avons pas encore de vrais cas clients à montrer — voici en revanche, très concrètement, ce que change notre intervention sur une fiche Google.</p>
+      <div class="comparison-stage reveal">
+        <svg class="comparison-arrow" viewBox="0 0 900 260" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#B7BCC3"></stop>
+              <stop offset="100%" stop-color="#4285F4"></stop>
+            </linearGradient>
+            <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+              <path d="M0,0 L12,6 L0,12 z" fill="#4285F4"></path>
+            </marker>
+          </defs>
+          <path d="M80 210 C260 220, 430 115, 820 45" fill="none" stroke="url(#arrowGradient)" stroke-width="4" stroke-dasharray="10 10" marker-end="url(#arrowHead)"></path>
+        </svg>
+        <article class="comparison-card muted">
+          <h3>Sans Pack Local</h3>
+          <ul class="comparison-list">
+            <li>Catégorie générique</li>
+            <li>Description vide ou incomplète</li>
+            <li>Aucune photo récente</li>
+            <li>Aucun avis récent</li>
+            <li>Aucune publication</li>
           </ul>
-        </div>
-
-        <div class="ba-card ba-after reveal">
-          <p class="ba-label">Fiche optimisée</p>
-          <ul class="ba-list">
-            <li><span class="ba-icon good" aria-hidden="true">✓</span> Catégories précises adaptées à votre activité</li>
-            <li><span class="ba-icon good" aria-hidden="true">✓</span> Description complète, claire, cohérente</li>
-            <li><span class="ba-icon good" aria-hidden="true">✓</span> Photos de qualité, régulièrement mises à jour</li>
-            <li><span class="ba-icon good" aria-hidden="true">✓</span> Avis récents avec réponses soignées</li>
-            <li><span class="ba-icon good" aria-hidden="true">✓</span> Publications régulières (actualités, offres…)</li>
-            <li><span class="ba-icon good" aria-hidden="true">✓</span> Horaires et infos toujours à jour</li>
+          <p class="comparison-status muted-status">Visibilité : enfouie ↓</p>
+        </article>
+        <article class="comparison-card active">
+          <h3>Avec Pack Local</h3>
+          <ul class="comparison-list">
+            <li>Catégories précises et complètes</li>
+            <li>Description complète et claire</li>
+            <li>Photos à jour</li>
+            <li>Avis récents, avec réponses</li>
+            <li>Publications régulières</li>
           </ul>
-        </div>
-
+          <p class="comparison-status active-status">Visibilité : en progression ↑</p>
+        </article>
       </div>
-      <p class="ba-note">Exemple illustratif — il ne s'agit pas d'un résultat obtenu par un client Pack Local.</p>
+      <p class="comparison-note">Exemple illustratif, pas un cas client réel — aucune position sur Google n'est garantie.</p>
     </div>
   </section>
 
-  <!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
-  <section class="faq" id="faq">
+  <section class="faq section" id="faq">
     <div class="wrap">
-      <p class="eyebrow">Questions fréquentes</p>
-      <h2 class="reveal">Tout ce qu'on nous demande avant de se lancer.</h2>
-
+      <p class="eyebrow">FAQ</p>
+      <h2 class="section-title reveal">Les réponses aux questions que l'on reçoit le plus souvent.</h2>
       <div class="faq-list">
         <details class="reveal">
           <summary>Les avis sollicités sont-ils légaux ?</summary>
-          <p>Demander à vos vrais clients de laisser un avis après une prestation réelle est une pratique autorisée. En revanche, nous ne créons jamais de faux avis, nous n'achetons jamais d'avis et nous n'offrons aucune récompense en échange d'un avis. Nous ne garantissons pas non plus qu'un client laissera un avis.</p>
+          <p>Oui. Nous ne sollicitons que vos vrais clients, après une prestation réelle, jamais en échange d'une contrepartie. La loi française interdit et sanctionne les faux avis, et Google applique également ses propres règles sur le sujet. Nous respectons les deux.</p>
         </details>
         <details class="reveal">
           <summary>Puis-je arrêter facilement ?</summary>
-          <p>L'engagement minimum est de 3 mois. Une fois cette période terminée, vous pouvez arrêter à tout moment.</p>
+          <p>Oui, à tout moment, sans démarche compliquée.</p>
         </details>
         <details class="reveal">
           <summary>En combien de temps voit-on des résultats ?</summary>
-          <p>Cela dépend de votre activité, de votre zone géographique, de votre concurrence et de l'état actuel de votre fiche. Certaines améliorations peuvent être visibles rapidement, mais la visibilité locale se travaille dans la durée. Nous ne garantissons jamais une position précise sur Google.</p>
+          <p>Le référencement local prend du temps et dépend de votre secteur, de votre ville et de la concurrence locale. Nous ne garantissons aucune position sur Google. En général, les premiers effets sur votre visibilité sont observables après plusieurs semaines à quelques mois de travail régulier.</p>
         </details>
         <details class="reveal">
-          <summary>Le SEO de mon site est-il inclus ?</summary>
-          <p>Non. Pack Local est volontairement spécialisé dans votre fiche Google et votre visibilité locale. Nous ne faisons pas le référencement de votre site, la gestion des réseaux sociaux ou la publicité Google Ads.</p>
+          <summary>Le SEO de mon site web est-il inclus ?</summary>
+          <p>Non. Pack Local se concentre uniquement sur votre fiche Google Business Profile et vos avis clients — c'est ce qui a le plus d'impact pour un commerce local, et ça nous permet de rester efficaces et abordables.</p>
         </details>
         <details class="reveal">
           <summary>Que se passe-t-il juste après mon paiement ?</summary>
-          <p>Vous remplissez vos informations d'entreprise et nous récupérons les éléments nécessaires pour démarrer. Nous vérifions votre fiche Google, puis nous lançons la mise en place initiale. Vous recevez ensuite les prochaines étapes par email.</p>
-        </details>
-        <details class="reveal">
-          <summary>Dois-je savoir utiliser Google ?</summary>
-          <p>Non. Vous n'avez pas besoin de connaissances en SEO ou en Google Business Profile. Nous nous occupons de la partie technique et vous indiquons uniquement les informations dont nous avons besoin.</p>
+          <p>Vous recevez un email de confirmation, et nous vous contactons sous 24 à 48h pour démarrer la mise en place de votre fiche.</p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════ CTA FINAL ═══════════════════════════ -->
-  <section class="cta-final" id="contact">
+  <section class="cta-final section">
     <div class="wrap cta-final-inner reveal">
       <h2>Faites décoller votre visibilité sur Google Maps</h2>
-      <div class="hero-actions">
-        <a class="btn btn-gradient btn-lg" href="#offres">Voir les offres</a>
-        <a class="btn btn-outline btn-lg" href="#calendly-link-a-remplacer">Demander mon audit gratuit</a>
-      </div>
+      <a class="btn btn-gradient btn-lg" href="#offres">Voir les offres</a>
     </div>
   </section>
-
 </main>
 
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer class="site-footer">
   <div class="wrap footer-inner">
     <div>
       <a class="logo" href="#top">
         <span class="logo-pin" aria-hidden="true"></span>
-        Pack Local
+        <span>Pack Local</span>
       </a>
-      <p class="footer-tag">Le spécialiste de la fiche Google et des avis clients pour les entreprises locales.</p>
+      <p class="footer-text">SEO local &amp; optimisation Google Business Profile</p>
     </div>
-    <div class="footer-links">
+    <nav class="footer-links" aria-label="Liens de pied de page">
       <a href="#offres">Offres</a>
       <a href="#methode">Méthode</a>
       <a href="#faq">FAQ</a>
-    </div>
+    </nav>
   </div>
   <div class="wrap footer-bottom">
     <p>© 2026 Pack Local. Tous droits réservés.</p>
-    <p><a href="#mentions-legales-a-remplacer">Mentions légales à compléter</a></p>
+    <a href="#mentions-legales-a-remplacer">Mentions légales à compléter</a>
   </div>
 </footer>
 
-<!-- WhatsApp flottant -->
+<div class="sticky-bar" id="stickyBar" aria-live="polite" hidden>
+  <p class="sticky-text" id="stickyBarText">Pack sélectionné</p>
+  <button class="btn btn-gradient sticky-button" id="stickyBarCta" type="button">Continuer →</button>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Fermer la fenêtre">×</button>
+    <div class="modal-head">
+      <p class="eyebrow">Onboarding Express</p>
+      <h2 id="modalTitle">Finaliser votre inscription</h2>
+      <p class="modal-lead">Vous sélectionnez votre formule, vous nous donnez les informations essentielles, puis vous réglez l'abonnement directement ici.</p>
+    </div>
+
+    <form id="onboardingForm" class="onboarding-form" name="pack-local-onboarding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="pack-local-onboarding">
+      <input type="hidden" name="selected_pack" id="selectedPackField">
+      <input type="hidden" name="selected_price" id="selectedPriceField">
+      <p class="hidden-honeypot">
+        <label>Ne pas remplir ce champ : <input name="bot-field"></label>
+      </p>
+
+      <div class="selected-pack-card">
+        <span class="selected-pack-label">Pack sélectionné</span>
+        <strong id="selectedPackDisplay">Essentiel</strong>
+        <span id="selectedPriceDisplay">69€/mois</span>
+      </div>
+
+      <div class="form-grid">
+        <label class="field">
+          <span>Nom &amp; prénom du responsable</span>
+          <input type="text" id="fullName" name="full_name" autocomplete="name" required>
+        </label>
+        <label class="field">
+          <span>Nom de l'établissement</span>
+          <input type="text" id="businessName" name="business_name" autocomplete="organization" required>
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="field">
+          <span>Téléphone</span>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+        </label>
+        <label class="field field-full">
+          <span>Ville / code postal</span>
+          <input type="text" id="location" name="location" autocomplete="address-level2" required>
+        </label>
+      </div>
+
+      <fieldset class="choice-group">
+        <legend>Votre situation Google</legend>
+        <label class="choice-card">
+          <input type="radio" name="google_listing_status" value="existing" required>
+          <span>J'ai déjà une fiche Google</span>
+        </label>
+        <label class="choice-card">
+          <input type="radio" name="google_listing_status" value="new" required>
+          <span>Je n'ai pas encore de fiche Google (création de zéro)</span>
+        </label>
+      </fieldset>
+
+      <div id="existingListingFields" class="conditional-block" hidden>
+        <label class="field">
+          <span>Email Google associé au compte de votre fiche</span>
+          <input type="email" id="googleAccountEmail" name="google_account_email" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Lien de votre fiche Google (optionnel)</span>
+          <input type="url" id="googleListingUrl" name="google_listing_url" placeholder="https://maps.google.com/...">
+        </label>
+      </div>
+
+      <div id="newListingMessage" class="info-box" hidden>
+        <p>Nous créerons votre fiche Google pour vous. Une vérification Google sera nécessaire ensuite (par courrier, téléphone ou vidéo selon les cas) — nous vous guidons à chaque étape.</p>
+      </div>
+
+      <div class="form-feedback" id="formFeedback" aria-live="polite"></div>
+      <button class="btn btn-gradient btn-block submit-button" id="submitButton" type="submit">Continuer vers le paiement →</button>
+    </form>
+
+    <div id="paymentStep" class="payment-step" hidden>
+      <div class="payment-head">
+        <h3>Paiement intégré Stripe</h3>
+        <p id="paymentSummary">Pack Essentiel · 69€/mois HT</p>
+      </div>
+      <div class="loading-state" id="loadingState" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Création de votre session de paiement…</p>
+      </div>
+      <div class="error-box" id="paymentError" hidden></div>
+      <div id="checkout" class="checkout-shell"></div>
+    </div>
+  </div>
+</div>
+
 <a class="whatsapp-fab" href="https://wa.me/33745958507" target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.01a9.865 9.865 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374A9.86 9.86 0 012.14 12.01C2.14 6.553 6.573 2.12 12.04 2.12a9.84 9.84 0 016.963 2.887 9.84 9.84 0 012.877 6.975c-.004 5.46-4.437 9.903-9.831 9.903zm0 0M12.04.001C5.495.001.06 5.435.057 11.98a11.93 11.93 0 001.598 5.986L0 24l6.233-1.636A11.93 11.93 0 0012.05 24c6.545 0 11.88-5.434 11.883-11.98A11.93 11.93 0 0020.42 3.49 11.93 11.93 0 0012.04.001z"/></svg>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.01a9.865 9.865 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374A9.86 9.86 0 012.14 12.01C2.14 6.553 6.573 2.12 12.04 2.12a9.84 9.84 0 016.963 2.887 9.84 9.84 0 012.877 6.975c-.004 5.46-4.437 9.903-9.831 9.903zm0 0M12.04.001C5.495.001.06 5.435.057 11.98a11.93 11.93 0 001.598 5.986L0 24l6.233-1.636A11.93 11.93 0 0012.05 24c6.545 0 11.88-5.434 11.883-11.98A11.93 11.93 0 0020.42 3.49 11.93 11.93 0 0012.04.001z"></path></svg>
 </a>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script src="script.js"></script>
 </body>
 </html>
