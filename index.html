@@ -323,28 +323,31 @@
 
 <div class="modal-overlay" id="modalOverlay" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <button class="modal-close" id="modalClose" type="button" aria-label="Fermer la fenêtre">×</button>
-    <div class="modal-head">
-      <p class="eyebrow">Onboarding Express</p>
-      <h2 id="modalTitle">Finaliser votre inscription</h2>
-      <p class="modal-lead">Vous sélectionnez votre formule, vous nous donnez les informations essentielles, puis vous réglez l'abonnement directement ici.</p>
+    <div class="modal-toolbar">
+      <button class="modal-nav modal-nav-pack" id="changePackBtn" type="button">← Changer de pack</button>
+      <button class="modal-nav modal-nav-prev" id="prevStepBtn" type="button" hidden>← Précédent</button>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Fermer la fenêtre">✕</button>
     </div>
 
-    <form id="onboardingForm" class="onboarding-form" name="pack-local-onboarding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-      <input type="hidden" name="form-name" value="pack-local-onboarding">
-      <input type="hidden" name="selected_pack" id="selectedPackField">
-      <input type="hidden" name="selected_price" id="selectedPriceField">
-      <p class="hidden-honeypot">
-        <label>Ne pas remplir ce champ : <input name="bot-field"></label>
-      </p>
+    <p class="modal-pack-banner" id="modalPackBanner">Vous choisissez : <strong id="modalPackSummary">Essentiel · 69€/mois</strong></p>
 
-      <div class="selected-pack-card">
-        <span class="selected-pack-label">Pack sélectionné</span>
-        <strong id="selectedPackDisplay">Essentiel</strong>
-        <span id="selectedPriceDisplay">69€/mois</span>
-      </div>
+    <div class="modal-steps">
+      <div id="stepForm" class="modal-step is-active" data-step="form">
+        <div class="modal-head">
+          <p class="eyebrow">Onboarding Express</p>
+          <h2 id="modalTitle" tabindex="-1">Finaliser votre inscription</h2>
+          <p class="modal-lead">Remplissez le formulaire ci-dessous, puis procédez au paiement.</p>
+        </div>
 
-      <div class="form-grid">
+        <form id="onboardingForm" class="onboarding-form" name="pack-local-onboarding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="pack-local-onboarding">
+          <input type="hidden" name="selected_pack" id="selectedPackField">
+          <input type="hidden" name="selected_price" id="selectedPriceField">
+          <p class="hidden-honeypot">
+            <label>Ne pas remplir ce champ : <input name="bot-field"></label>
+          </p>
+
+          <div class="form-grid">
         <label class="field">
           <span>Nom &amp; prénom du responsable</span>
           <input type="text" id="fullName" name="full_name" autocomplete="name" required>
@@ -394,21 +397,31 @@
         <p>Nous créerons votre fiche Google pour vous. Une vérification Google sera nécessaire ensuite (par courrier, téléphone ou vidéo selon les cas) — nous vous guidons à chaque étape.</p>
       </div>
 
-      <div class="form-feedback" id="formFeedback" aria-live="polite"></div>
-      <button class="btn btn-gradient btn-block submit-button" id="submitButton" type="submit">Continuer vers le paiement →</button>
-    </form>
+          <div class="form-feedback" id="formFeedback" aria-live="polite"></div>
+          <button class="btn btn-gradient btn-block submit-button" id="submitButton" type="submit">Continuer vers le paiement →</button>
+        </form>
+      </div>
 
-    <div id="paymentStep" class="payment-step" hidden>
-      <div class="payment-head">
-        <h3>Paiement intégré Stripe</h3>
-        <p id="paymentSummary">Pack Essentiel · 69€/mois HT</p>
+      <div id="stepPayment" class="modal-step" data-step="payment" hidden>
+        <div class="modal-head">
+          <p class="eyebrow">Étape 2 sur 2</p>
+          <h2 id="paymentTitle" tabindex="-1">Paiement sécurisé</h2>
+          <p class="modal-lead">Validez votre renonciation au droit de rétractation, puis réglez votre abonnement.</p>
+        </div>
+
+        <label class="waiver-box" id="waiverBox">
+          <input type="checkbox" id="waiverCheckbox" name="waiver_accepted">
+          <span>Je demande expressément que l'exécution du service commence immédiatement, et je reconnais renoncer à mon droit de rétractation de 14 jours une fois le service commencé.</span>
+        </label>
+
+        <div class="loading-state" id="loadingState" hidden>
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Création de votre session de paiement…</p>
+        </div>
+        <div class="error-box" id="paymentError" hidden></div>
+        <p class="checkout-hint" id="checkoutHint">Cochez la case ci-dessus pour accéder au paiement.</p>
+        <div id="checkout" class="checkout-shell is-locked" aria-hidden="true"></div>
       </div>
-      <div class="loading-state" id="loadingState" hidden>
-        <div class="spinner" aria-hidden="true"></div>
-        <p>Création de votre session de paiement…</p>
-      </div>
-      <div class="error-box" id="paymentError" hidden></div>
-      <div id="checkout" class="checkout-shell"></div>
     </div>
   </div>
 </div>

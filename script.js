@@ -9,26 +9,33 @@ const stickyBarText = document.getElementById('stickyBarText');
 const stickyBarCta = document.getElementById('stickyBarCta');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalClose = document.getElementById('modalClose');
+const changePackBtn = document.getElementById('changePackBtn');
+const prevStepBtn = document.getElementById('prevStepBtn');
+const stepForm = document.getElementById('stepForm');
+const stepPayment = document.getElementById('stepPayment');
+const modalPackSummary = document.getElementById('modalPackSummary');
 const onboardingForm = document.getElementById('onboardingForm');
 const selectedPackField = document.getElementById('selectedPackField');
 const selectedPriceField = document.getElementById('selectedPriceField');
-const selectedPackDisplay = document.getElementById('selectedPackDisplay');
-const selectedPriceDisplay = document.getElementById('selectedPriceDisplay');
-const paymentStep = document.getElementById('paymentStep');
-const paymentSummary = document.getElementById('paymentSummary');
 const loadingState = document.getElementById('loadingState');
 const paymentError = document.getElementById('paymentError');
 const checkoutContainer = document.getElementById('checkout');
+const checkoutHint = document.getElementById('checkoutHint');
 const formFeedback = document.getElementById('formFeedback');
 const submitButton = document.getElementById('submitButton');
 const existingListingFields = document.getElementById('existingListingFields');
 const newListingMessage = document.getElementById('newListingMessage');
 const googleAccountEmail = document.getElementById('googleAccountEmail');
+const waiverCheckbox = document.getElementById('waiverCheckbox');
+const modalTitle = document.getElementById('modalTitle');
+const paymentTitle = document.getElementById('paymentTitle');
 const stripePublishableKey = document.querySelector('meta[name="stripe-publishable-key"]')?.content?.trim();
 
 let selectedPack = null;
 let embeddedCheckout = null;
 let lastFocusedElement = null;
+let currentStep = 'form';
+let formSubmitted = false;
 
 const PACK_LABELS = {
   essentiel: { name: 'Essentiel', amount: 69 },
@@ -87,7 +94,7 @@ function setSelectedPack(card) {
   pricingCards.forEach((pricingCard) => pricingCard.classList.remove('selected'));
   card.classList.add('selected');
 
-  stickyBarText.textContent = `Pack ${name} selectionne · ${price}€/mois`;
+  stickyBarText.textContent = `Pack ${name} sélectionné · ${price}€/mois`;
   stickyBar.hidden = false;
   document.body.classList.add('sticky-visible');
 }
@@ -124,9 +131,73 @@ function syncSelectedPackToForm() {
 
   selectedPackField.value = selectedPack.pack;
   selectedPriceField.value = `${selectedPack.price}€/mois HT`;
-  selectedPackDisplay.textContent = selectedPack.name;
-  selectedPriceDisplay.textContent = `${selectedPack.price}€/mois HT`;
-  paymentSummary.textContent = `Pack ${selectedPack.name} · ${selectedPack.price}€/mois HT`;
+  modalPackSummary.textContent = `${selectedPack.name} · ${selectedPack.price}€/mois`;
+}
+
+function focusStep(step) {
+  requestAnimationFrame(() => {
+    if (step === 'form') {
+      const firstField = onboardingForm?.querySelector('input:not([type="hidden"]):not([name="bot-field"])');
+      if (firstField) {
+        firstField.focus();
+      } else if (modalTitle) {
+        modalTitle.focus();
+      }
+      return;
+    }
+
+    if (waiverCheckbox) {
+      waiverCheckbox.focus();
+    } else if (paymentTitle) {
+      paymentTitle.focus();
+    }
+  });
+}
+
+function resetPaymentStep() {
+  waiverCheckbox.checked = false;
+  paymentError.hidden = true;
+  paymentError.textContent = '';
+  loadingState.hidden = true;
+  checkoutHint.classList.remove('is-hidden');
+  checkoutContainer.classList.add('is-locked');
+  checkoutContainer.classList.remove('is-ready');
+  checkoutContainer.setAttribute('aria-hidden', 'true');
+  checkoutContainer.innerHTML = '';
+}
+
+async function teardownEmbeddedCheckout() {
+  if (embeddedCheckout && typeof embeddedCheckout.destroy === 'function') {
+    await embeddedCheckout.destroy();
+  }
+  embeddedCheckout = null;
+}
+
+function setStep(step) {
+  currentStep = step;
+
+  if (step === 'form') {
+    stepForm.hidden = false;
+    stepForm.classList.add('is-active');
+    stepPayment.hidden = true;
+    stepPayment.classList.remove('is-active');
+    changePackBtn.hidden = false;
+    prevStepBtn.hidden = true;
+    resetPaymentStep();
+    teardownEmbeddedCheckout();
+    focusStep('form');
+    return;
+  }
+
+  stepForm.hidden = true;
+  stepForm.classList.remove('is-active');
+  stepPayment.hidden = false;
+  stepPayment.classList.remove('is-active');
+  void stepPayment.offsetWidth;
+  stepPayment.classList.add('is-active');
+  changePackBtn.hidden = true;
+  prevStepBtn.hidden = false;
+  focusStep('payment');
 }
 
 function openModal() {
@@ -135,27 +206,21 @@ function openModal() {
   }
 
   syncSelectedPackToForm();
+  setStep('form');
   lastFocusedElement = document.activeElement;
   modalOverlay.hidden = false;
   document.body.style.overflow = 'hidden';
-  modalClose.focus();
 }
 
-async function teardownEmbeddedCheckout() {
-  if (embeddedCheckout && typeof embeddedCheckout.destroy === 'function') {
-    await embeddedCheckout.destroy();
-  }
-  embeddedCheckout = null;
-  checkoutContainer.innerHTML = '';
-}
-
-async function closeModal() {
+async function closeModal(keepStep = false) {
   modalOverlay.hidden = true;
   document.body.style.overflow = '';
-  paymentStep.hidden = true;
-  paymentError.hidden = true;
-  paymentError.textContent = '';
-  loadingState.hidden = true;
+
+  if (!keepStep) {
+    formSubmitted = false;
+    setStep('form');
+  }
+
   formFeedback.textContent = '';
   submitButton.disabled = false;
   await teardownEmbeddedCheckout();
@@ -165,10 +230,18 @@ async function closeModal() {
   }
 }
 
+function goToOffers() {
+  closeModal(true);
+  const offersSection = document.getElementById('offres');
+  if (offersSection) {
+    offersSection.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+}
+
 stickyBarCta?.addEventListener('click', openModal);
-modalClose?.addEventListener('click', () => {
-  closeModal();
-});
+modalClose?.addEventListener('click', () => closeModal());
+changePackBtn?.addEventListener('click', goToOffers);
+prevStepBtn?.addEventListener('click', () => setStep('form'));
 
 modalOverlay?.addEventListener('click', (event) => {
   if (event.target === modalOverlay) {
@@ -224,11 +297,11 @@ async function submitNetlifyForm(formData) {
 
 async function mountEmbeddedCheckout(clientSecret) {
   if (!stripePublishableKey) {
-    throw new Error('La cle publique Stripe est absente. Renseignez-la dans la balise meta "stripe-publishable-key".');
+    throw new Error('La clé publique Stripe est absente. Renseignez-la dans la balise meta "stripe-publishable-key".');
   }
 
   if (typeof window.Stripe !== 'function') {
-    throw new Error('Stripe.js n a pas pu etre charge.');
+    throw new Error('Stripe.js n\'a pas pu être chargé.');
   }
 
   const stripe = window.Stripe(stripePublishableKey);
@@ -246,10 +319,44 @@ async function createCheckoutSession(payload) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.error || 'Impossible de creer la session de paiement.');
+    throw new Error(data.error || 'Impossible de créer la session de paiement.');
   }
 
   return data.client_secret;
+}
+
+async function initializePayment() {
+  if (!selectedPack || !formSubmitted || !waiverCheckbox.checked) {
+    return;
+  }
+
+  loadingState.hidden = false;
+  paymentError.hidden = true;
+  paymentError.textContent = '';
+
+  const formData = new FormData(onboardingForm);
+  formData.set('waiver_accepted', 'oui');
+  const payload = {
+    pack: selectedPack.pack,
+    formData: Object.fromEntries(formData.entries())
+  };
+
+  try {
+    await teardownEmbeddedCheckout();
+    checkoutContainer.innerHTML = '';
+    const clientSecret = await createCheckoutSession(payload);
+    await mountEmbeddedCheckout(clientSecret);
+    checkoutHint.classList.add('is-hidden');
+    checkoutContainer.classList.remove('is-locked');
+    checkoutContainer.classList.add('is-ready');
+    checkoutContainer.setAttribute('aria-hidden', 'false');
+  } catch (error) {
+    paymentError.hidden = false;
+    paymentError.textContent = error.message || 'Une erreur est survenue lors de la création du paiement.';
+    waiverCheckbox.checked = false;
+  } finally {
+    loadingState.hidden = true;
+  }
 }
 
 onboardingForm?.addEventListener('submit', async (event) => {
@@ -260,29 +367,27 @@ onboardingForm?.addEventListener('submit', async (event) => {
   }
 
   submitButton.disabled = true;
-  loadingState.hidden = false;
-  paymentError.hidden = true;
-  paymentError.textContent = '';
-  paymentStep.hidden = false;
-
-  const formData = new FormData(onboardingForm);
-  const payload = {
-    pack: selectedPack.pack,
-    formData: Object.fromEntries(formData.entries())
-  };
 
   try {
-    await teardownEmbeddedCheckout();
+    const formData = new FormData(onboardingForm);
     await submitNetlifyForm(formData);
-    const clientSecret = await createCheckoutSession(payload);
-    await mountEmbeddedCheckout(clientSecret);
-  } catch (error) {
-    paymentError.hidden = false;
-    paymentError.textContent = error.message || 'Une erreur est survenue lors de la creation du paiement.';
+    formSubmitted = true;
+    setStep('payment');
+  } catch (_) {
+    formFeedback.textContent = 'Une erreur est survenue lors de l\'envoi du formulaire. Réessayez.';
   } finally {
-    loadingState.hidden = true;
     submitButton.disabled = false;
   }
+});
+
+waiverCheckbox?.addEventListener('change', async () => {
+  if (!waiverCheckbox.checked) {
+    resetPaymentStep();
+    await teardownEmbeddedCheckout();
+    return;
+  }
+
+  await initializePayment();
 });
 
 onboardingForm?.querySelectorAll('input').forEach((input) => {
@@ -299,9 +404,10 @@ modalOverlay?.addEventListener('keydown', (event) => {
     return;
   }
 
-  const focusable = modalOverlay.querySelectorAll(
+  const modal = modalOverlay.querySelector('.modal');
+  const focusable = [...modal.querySelectorAll(
     'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
-  );
+  )].filter((el) => !el.closest('[hidden]'));
 
   if (!focusable.length) {
     return;
@@ -324,6 +430,6 @@ if (window.location.pathname.endsWith('/merci.html')) {
   const label = PACK_LABELS[packFromQuery];
   const thanksPack = document.getElementById('thanksPack');
   if (label && thanksPack) {
-    thanksPack.textContent = `Votre formule ${label.name} a bien ete prise en compte.`;
+    thanksPack.textContent = `Votre formule ${label.name} a bien été prise en compte.`;
   }
 }

@@ -1,10 +1,21 @@
 const Stripe = require('stripe');
 
-const PACKS = {
-  essentiel: { label: 'Essentiel', amount: 6900 },
-  populaire: { label: 'Populaire', amount: 9900 },
-  premium: { label: 'Premium', amount: 17900 }
+const PACK_LABELS = {
+  essentiel: 'Essentiel',
+  populaire: 'Populaire',
+  premium: 'Premium'
 };
+
+const PRICE_ENV_KEYS = {
+  essentiel: 'STRIPE_PRICE_ESSENTIEL',
+  populaire: 'STRIPE_PRICE_POPULAIRE',
+  premium: 'STRIPE_PRICE_PREMIUM'
+};
+
+function getPriceIdForPack(pack) {
+  const envKey = PRICE_ENV_KEYS[pack];
+  return envKey ? process.env[envKey] : null;
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -18,9 +29,10 @@ exports.handler = async (event) => {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
     const { pack, formData = {} } = JSON.parse(event.body || '{}');
-    const selectedPack = PACKS[pack];
+    const packLabel = PACK_LABELS[pack];
+    const priceId = getPriceIdForPack(pack);
 
-    if (!selectedPack) {
+    if (!packLabel) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json' },
@@ -28,10 +40,17 @@ exports.handler = async (event) => {
       };
     }
 
+    if (!priceId) {
+      return {
+        statusCode: 500,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: `Price ID Stripe manquant pour le pack ${packLabel}.` })
+      };
+    }
+
     const metadata = Object.entries({
       pack,
-      pack_label: selectedPack.label,
-      pack_price_eur: String(selectedPack.amount / 100),
+      pack_label: packLabel,
       ...formData
     }).reduce((acc, [key, value]) => {
       if (typeof value === 'string' && value.trim()) {
@@ -50,16 +69,8 @@ exports.handler = async (event) => {
       metadata,
       line_items: [
         {
-          quantity: 1,
-          price_data: {
-            currency: 'eur',
-            unit_amount: selectedPack.amount,
-            recurring: { interval: 'month' },
-            product_data: {
-              name: `Pack Local ${selectedPack.label}`,
-              description: `Abonnement mensuel Pack Local ${selectedPack.label}`
-            }
-          }
+          price: priceId,
+          quantity: 1
         }
       ]
     });
