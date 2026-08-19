@@ -134,7 +134,7 @@ function initPurchaseTunnel() {
     }
 
     selectedPackField.value = selectedPack.pack;
-    selectedPriceField.value = `${selectedPack.price}€/mois HT`;
+    selectedPriceField.value = `${selectedPack.price}€/mois`;
     modalPackSummary.textContent = `${selectedPack.name} · ${selectedPack.price}€/mois`;
   }
 

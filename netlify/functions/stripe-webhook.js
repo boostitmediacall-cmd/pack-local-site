@@ -2,9 +2,9 @@ const Stripe = require('stripe');
 const { Resend } = require('resend');
 
 const PACK_PRICES = {
-  essentiel: '69€/mois HT',
-  populaire: '99€/mois HT',
-  premium: '179€/mois HT'
+  essentiel: '69€/mois',
+  populaire: '99€/mois',
+  premium: '179€/mois'
 };
 
 exports.handler = async (event) => {
