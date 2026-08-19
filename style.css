@@ -949,13 +949,45 @@ h3{font-size:1.35rem;}
   background:var(--white);
 }
 
-.checkout-shell.is-locked{
-  display:none;
+.payment-reassurance{
+  margin-top:16px;
+  text-align:center;
+  color:var(--grey);
+  font-size:.9rem;
 }
 
-.checkout-shell.is-ready{
-  display:block;
+.modal-payment{margin-top:8px;}
+
+.merci-layout{
+  max-width:760px;
+  margin:0 auto;
+  display:grid;
+  gap:28px;
 }
+
+.merci-intro{margin-bottom:0;}
+
+.dossier-panel{
+  padding:28px;
+  border:1px solid var(--grey-light);
+  border-radius:24px;
+  background:var(--white);
+  box-shadow:var(--shadow-soft);
+}
+
+.dossier-panel h2{margin-bottom:10px;font-size:clamp(1.6rem,3vw,2.2rem);}
+
+.field-hint{
+  color:var(--grey);
+  font-size:.85rem;
+}
+
+.dossier-success{margin-top:0;}
+
+.ads-mode .nav,
+.ads-mode .burger{display:none !important;}
+
+.ads-mode .whatsapp-fab{display:none !important;}
 
 .whatsapp-fab{
   position:fixed;

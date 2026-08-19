@@ -4,7 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Merci — Pack Local</title>
-<meta name="description" content="Merci pour votre inscription Pack Local. Nous vous contactons sous 24 à 48h pour démarrer.">
+<meta name="description" content="Finalisez votre dossier Pack Local après votre souscription.">
+<meta name="robots" content="noindex,nofollow">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y6CL1MT94D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Y6CL1MT94D');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,450;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -33,16 +43,90 @@
 </header>
 
 <main id="contenu" class="section">
-  <div class="wrap">
-    <div class="selected-pack-card" style="max-width:720px;margin:0 auto 24px;">
+  <div class="wrap merci-layout">
+    <div class="selected-pack-card merci-intro">
       <p class="eyebrow">Confirmation</p>
       <h1 style="font-size:clamp(2.2rem,4vw,3.4rem);">Merci !</h1>
-      <p id="thanksPack">Nous vous contactons sous 24 à 48h pour démarrer.</p>
+      <p id="thanksPack">Votre pack est activé.</p>
       <p>Un email de confirmation Stripe vous sera également envoyé automatiquement.</p>
     </div>
-    <div style="display:flex;justify-content:center;">
-      <a class="btn btn-gradient btn-lg" href="index.html#offres">Revenir aux offres</a>
-    </div>
+
+    <section class="dossier-panel" aria-labelledby="dossierTitle">
+      <p class="eyebrow">Étape suivante</p>
+      <h2 id="dossierTitle">Finaliser votre dossier</h2>
+      <p class="section-intro">Complétez ces informations pour que nous puissions démarrer la mise en place de votre fiche Google.</p>
+
+      <form id="dossierForm" class="onboarding-form" name="pack-local-dossier" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="pack-local-dossier">
+        <input type="hidden" name="selected_pack" id="dossierPackField">
+        <input type="hidden" name="stripe_session_id" id="dossierSessionField">
+        <p class="hidden-honeypot">
+          <label>Ne pas remplir ce champ : <input name="bot-field"></label>
+        </p>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Nom &amp; prénom du responsable</span>
+            <input type="text" id="dossierFullName" name="full_name" autocomplete="name" required>
+          </label>
+          <label class="field">
+            <span>Nom de l'établissement</span>
+            <input type="text" id="dossierBusinessName" name="business_name" autocomplete="organization" required>
+          </label>
+          <label class="field">
+            <span>Téléphone</span>
+            <input type="tel" id="dossierPhone" name="phone" autocomplete="tel" required>
+          </label>
+          <label class="field">
+            <span>Ville / code postal</span>
+            <input type="text" id="dossierLocation" name="location" autocomplete="postal-code" required>
+          </label>
+          <label class="field field-full">
+            <span>SIRET ou n° de TVA intracommunautaire</span>
+            <input type="text" id="dossierTaxId" name="tax_id" required>
+            <small class="field-hint">Nécessaire pour votre facturation professionnelle.</small>
+          </label>
+        </div>
+
+        <fieldset class="choice-group">
+          <legend>Votre situation Google</legend>
+          <label class="choice-card">
+            <input type="radio" name="google_listing_status" value="existing" required>
+            <span>J'ai déjà une fiche Google</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="google_listing_status" value="new" required>
+            <span>Je n'ai pas encore de fiche Google (création de zéro)</span>
+          </label>
+        </fieldset>
+
+        <div id="dossierExistingFields" class="conditional-block" hidden>
+          <label class="field">
+            <span>Email Google associé au compte de votre fiche</span>
+            <input type="email" id="dossierGoogleEmail" name="google_account_email" autocomplete="off">
+          </label>
+          <label class="field">
+            <span>Lien de votre fiche Google (optionnel)</span>
+            <input type="url" id="dossierGoogleUrl" name="google_listing_url" placeholder="https://maps.google.com/...">
+          </label>
+        </div>
+
+        <div id="dossierNewMessage" class="info-box" hidden>
+          <p>Nous créerons votre fiche Google pour vous. Une vérification Google sera nécessaire ensuite (par courrier, téléphone ou vidéo selon les cas) — nous vous guidons à chaque étape.</p>
+        </div>
+
+        <label class="waiver-box">
+          <input type="checkbox" id="dossierWaiver" name="waiver_accepted" value="oui">
+          <span>Je demande expressément que l'exécution du service commence immédiatement, et je reconnais renoncer à mon droit de rétractation de 14 jours une fois le service commencé (<a href="cgv.html" target="_blank" rel="noopener">voir CGV</a>).</span>
+        </label>
+
+        <button class="btn btn-gradient btn-block" id="dossierSubmit" type="submit" disabled>Envoyer mes informations</button>
+      </form>
+
+      <div id="dossierSuccess" class="info-box dossier-success" hidden>
+        <p>Merci, nous vous contactons sous 24 à 48h.</p>
+      </div>
+    </section>
   </div>
 </main>
 

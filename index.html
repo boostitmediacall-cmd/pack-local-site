@@ -324,111 +324,32 @@
 </div>
 
 <div class="modal-overlay" id="modalOverlay" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
     <div class="modal-toolbar">
       <button class="modal-nav modal-nav-pack" id="changePackBtn" type="button">← Changer de pack</button>
-      <button class="modal-nav modal-nav-prev" id="prevStepBtn" type="button" hidden>← Précédent</button>
       <button class="modal-close" id="modalClose" type="button" aria-label="Fermer la fenêtre">✕</button>
     </div>
 
     <p class="modal-pack-banner" id="modalPackBanner">Vous choisissez : <strong id="modalPackSummary">Essentiel · 69€/mois</strong></p>
 
-    <div class="modal-steps">
-      <div id="stepForm" class="modal-step is-active" data-step="form">
-        <div class="modal-head">
-          <p class="eyebrow">Onboarding Express</p>
-          <h2 id="modalTitle" tabindex="-1">Finaliser votre inscription</h2>
-          <p class="modal-lead">Remplissez le formulaire ci-dessous, puis procédez au paiement.</p>
-        </div>
-
-        <form id="onboardingForm" class="onboarding-form" name="pack-local-onboarding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="pack-local-onboarding">
-          <input type="hidden" name="selected_pack" id="selectedPackField">
-          <input type="hidden" name="selected_price" id="selectedPriceField">
-          <p class="hidden-honeypot">
-            <label>Ne pas remplir ce champ : <input name="bot-field"></label>
-          </p>
-
-          <div class="form-grid">
-        <label class="field">
-          <span>Nom &amp; prénom du responsable</span>
-          <input type="text" id="fullName" name="full_name" autocomplete="name" required>
-        </label>
-        <label class="field">
-          <span>Nom de l'établissement</span>
-          <input type="text" id="businessName" name="business_name" autocomplete="organization" required>
-        </label>
-        <label class="field">
-          <span>Email</span>
-          <input type="email" id="email" name="email" autocomplete="email" required>
-        </label>
-        <label class="field">
-          <span>Téléphone</span>
-          <input type="tel" id="phone" name="phone" autocomplete="tel" required>
-        </label>
-        <label class="field field-full">
-          <span>Ville / code postal</span>
-          <input type="text" id="location" name="location" autocomplete="address-level2" required>
-        </label>
+    <div class="modal-payment">
+      <div class="modal-head">
+        <p class="eyebrow">Paiement sécurisé</p>
+        <h2 id="paymentTitle" tabindex="-1">Finalisez votre abonnement</h2>
       </div>
 
-      <fieldset class="choice-group">
-        <legend>Votre situation Google</legend>
-        <label class="choice-card">
-          <input type="radio" name="google_listing_status" value="existing" required>
-          <span>J'ai déjà une fiche Google</span>
-        </label>
-        <label class="choice-card">
-          <input type="radio" name="google_listing_status" value="new" required>
-          <span>Je n'ai pas encore de fiche Google (création de zéro)</span>
-        </label>
-      </fieldset>
-
-      <div id="existingListingFields" class="conditional-block" hidden>
-        <label class="field">
-          <span>Email Google associé au compte de votre fiche</span>
-          <input type="email" id="googleAccountEmail" name="google_account_email" autocomplete="off">
-        </label>
-        <label class="field">
-          <span>Lien de votre fiche Google (optionnel)</span>
-          <input type="url" id="googleListingUrl" name="google_listing_url" placeholder="https://maps.google.com/...">
-        </label>
+      <div class="loading-state" id="loadingState" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Préparation de votre paiement…</p>
       </div>
-
-      <div id="newListingMessage" class="info-box" hidden>
-        <p>Nous créerons votre fiche Google pour vous. Une vérification Google sera nécessaire ensuite (par courrier, téléphone ou vidéo selon les cas) — nous vous guidons à chaque étape.</p>
-      </div>
-
-          <div class="form-feedback" id="formFeedback" aria-live="polite"></div>
-          <button class="btn btn-gradient btn-block submit-button" id="submitButton" type="submit">Continuer vers le paiement →</button>
-        </form>
-      </div>
-
-      <div id="stepPayment" class="modal-step" data-step="payment" hidden>
-        <div class="modal-head">
-          <p class="eyebrow">Étape 2 sur 2</p>
-          <h2 id="paymentTitle" tabindex="-1">Paiement sécurisé</h2>
-          <p class="modal-lead">Validez votre renonciation au droit de rétractation, puis réglez votre abonnement.</p>
-        </div>
-
-        <label class="waiver-box" id="waiverBox">
-          <input type="checkbox" id="waiverCheckbox" name="waiver_accepted">
-          <span>Je demande expressément que l'exécution du service commence immédiatement, et je reconnais renoncer à mon droit de rétractation de 14 jours une fois le service commencé (<a href="cgv.html" target="_blank" rel="noopener">voir CGV</a>).</span>
-        </label>
-
-        <div class="loading-state" id="loadingState" hidden>
-          <div class="spinner" aria-hidden="true"></div>
-          <p>Création de votre session de paiement…</p>
-        </div>
-        <div class="error-box" id="paymentError" hidden></div>
-        <p class="checkout-hint" id="checkoutHint">Cochez la case ci-dessus pour accéder au paiement.</p>
-        <div id="checkout" class="checkout-shell is-locked" aria-hidden="true"></div>
-      </div>
+      <div class="error-box" id="paymentError" hidden></div>
+      <div id="checkout" class="checkout-shell"></div>
+      <p class="payment-reassurance">🔒 Paiement sécurisé par Stripe · Sans engagement, résiliable à tout moment</p>
     </div>
   </div>
 </div>
 
-<a class="whatsapp-fab" href="https://wa.me/33745958507" target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp">
+<a class="whatsapp-fab" id="whatsappFab" href="https://wa.me/33745958507" target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.01a9.865 9.865 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374A9.86 9.86 0 012.14 12.01C2.14 6.553 6.573 2.12 12.04 2.12a9.84 9.84 0 016.963 2.887 9.84 9.84 0 012.877 6.975c-.004 5.46-4.437 9.903-9.831 9.903zm0 0M12.04.001C5.495.001.06 5.435.057 11.98a11.93 11.93 0 001.598 5.986L0 24l6.233-1.636A11.93 11.93 0 0012.05 24c6.545 0 11.88-5.434 11.883-11.98A11.93 11.93 0 0020.42 3.49 11.93 11.93 0 0012.04.001z"></path></svg>
 </a>
 

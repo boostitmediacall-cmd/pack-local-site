@@ -1,5 +1,11 @@
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const PACK_LABELS = {
+  essentiel: { name: 'Essentiel', amount: 69 },
+  populaire: { name: 'Populaire', amount: 99 },
+  premium: { name: 'Premium', amount: 179 }
+};
+
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
 
@@ -44,6 +50,14 @@ if (reduceMotion || !('IntersectionObserver' in window)) {
   revealEls.forEach((el) => observer.observe(el));
 }
 
+function initGoogleAdsMode() {
+  if (!new URLSearchParams(window.location.search).has('gclid')) {
+    return;
+  }
+
+  document.body.classList.add('ads-mode');
+}
+
 function initPurchaseTunnel() {
   const modalOverlay = document.getElementById('modalOverlay');
   if (!modalOverlay) {
@@ -57,32 +71,16 @@ function initPurchaseTunnel() {
   const stickyBarCta = document.getElementById('stickyBarCta');
   const modalClose = document.getElementById('modalClose');
   const changePackBtn = document.getElementById('changePackBtn');
-  const prevStepBtn = document.getElementById('prevStepBtn');
-  const stepForm = document.getElementById('stepForm');
-  const stepPayment = document.getElementById('stepPayment');
   const modalPackSummary = document.getElementById('modalPackSummary');
-  const onboardingForm = document.getElementById('onboardingForm');
-  const selectedPackField = document.getElementById('selectedPackField');
-  const selectedPriceField = document.getElementById('selectedPriceField');
   const loadingState = document.getElementById('loadingState');
   const paymentError = document.getElementById('paymentError');
   const checkoutContainer = document.getElementById('checkout');
-  const checkoutHint = document.getElementById('checkoutHint');
-  const formFeedback = document.getElementById('formFeedback');
-  const submitButton = document.getElementById('submitButton');
-  const existingListingFields = document.getElementById('existingListingFields');
-  const newListingMessage = document.getElementById('newListingMessage');
-  const googleAccountEmail = document.getElementById('googleAccountEmail');
-  const waiverCheckbox = document.getElementById('waiverCheckbox');
-  const modalTitle = document.getElementById('modalTitle');
   const paymentTitle = document.getElementById('paymentTitle');
   const stripePublishableKey = document.querySelector('meta[name="stripe-publishable-key"]')?.content?.trim();
 
   let selectedPack = null;
   let embeddedCheckout = null;
   let lastFocusedElement = null;
-  let currentStep = 'form';
-  let formSubmitted = false;
 
   function setSelectedPack(card) {
     const pack = card.dataset.pack;
@@ -114,60 +112,12 @@ function initPurchaseTunnel() {
     setSelectedPack(card);
   });
 
-  function updateListingFields() {
-    const selectedStatus = onboardingForm?.querySelector('input[name="google_listing_status"]:checked')?.value;
-    const isExisting = selectedStatus === 'existing';
-    const isNew = selectedStatus === 'new';
-
-    existingListingFields.hidden = !isExisting;
-    newListingMessage.hidden = !isNew;
-    googleAccountEmail.required = isExisting;
-  }
-
-  onboardingForm?.querySelectorAll('input[name="google_listing_status"]').forEach((input) => {
-    input.addEventListener('change', updateListingFields);
-  });
-
-  function syncSelectedPackToForm() {
+  function syncSelectedPackSummary() {
     if (!selectedPack) {
       return;
     }
 
-    selectedPackField.value = selectedPack.pack;
-    selectedPriceField.value = `${selectedPack.price}€/mois`;
     modalPackSummary.textContent = `${selectedPack.name} · ${selectedPack.price}€/mois`;
-  }
-
-  function focusStep(step) {
-    requestAnimationFrame(() => {
-      if (step === 'form') {
-        const firstField = onboardingForm?.querySelector('input:not([type="hidden"]):not([name="bot-field"])');
-        if (firstField) {
-          firstField.focus();
-        } else if (modalTitle) {
-          modalTitle.focus();
-        }
-        return;
-      }
-
-      if (waiverCheckbox) {
-        waiverCheckbox.focus();
-      } else if (paymentTitle) {
-        paymentTitle.focus();
-      }
-    });
-  }
-
-  function resetPaymentStep() {
-    waiverCheckbox.checked = false;
-    paymentError.hidden = true;
-    paymentError.textContent = '';
-    loadingState.hidden = true;
-    checkoutHint.classList.remove('is-hidden');
-    checkoutContainer.classList.add('is-locked');
-    checkoutContainer.classList.remove('is-ready');
-    checkoutContainer.setAttribute('aria-hidden', 'true');
-    checkoutContainer.innerHTML = '';
   }
 
   async function teardownEmbeddedCheckout() {
@@ -175,125 +125,6 @@ function initPurchaseTunnel() {
       await embeddedCheckout.destroy();
     }
     embeddedCheckout = null;
-  }
-
-  function setStep(step) {
-    currentStep = step;
-
-    if (step === 'form') {
-      stepForm.hidden = false;
-      stepForm.classList.add('is-active');
-      stepPayment.hidden = true;
-      stepPayment.classList.remove('is-active');
-      changePackBtn.hidden = false;
-      prevStepBtn.hidden = true;
-      resetPaymentStep();
-      teardownEmbeddedCheckout();
-      focusStep('form');
-      return;
-    }
-
-    stepForm.hidden = true;
-    stepForm.classList.remove('is-active');
-    stepPayment.hidden = false;
-    stepPayment.classList.remove('is-active');
-    void stepPayment.offsetWidth;
-    stepPayment.classList.add('is-active');
-    changePackBtn.hidden = true;
-    prevStepBtn.hidden = false;
-    focusStep('payment');
-  }
-
-  function openModal() {
-    if (!selectedPack) {
-      return;
-    }
-
-    syncSelectedPackToForm();
-    setStep('form');
-    lastFocusedElement = document.activeElement;
-    modalOverlay.hidden = false;
-    document.body.style.overflow = 'hidden';
-  }
-
-  async function closeModal(keepStep = false) {
-    modalOverlay.hidden = true;
-    document.body.style.overflow = '';
-
-    if (!keepStep) {
-      formSubmitted = false;
-      setStep('form');
-    }
-
-    formFeedback.textContent = '';
-    submitButton.disabled = false;
-    await teardownEmbeddedCheckout();
-
-    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-      lastFocusedElement.focus();
-    }
-  }
-
-  function goToOffers() {
-    closeModal(true);
-    offersSection?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  }
-
-  stickyBarCta?.addEventListener('click', openModal);
-  modalClose?.addEventListener('click', () => closeModal());
-  changePackBtn?.addEventListener('click', goToOffers);
-  prevStepBtn?.addEventListener('click', () => setStep('form'));
-
-  modalOverlay.addEventListener('click', (event) => {
-    if (event.target === modalOverlay) {
-      closeModal();
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modalOverlay.hidden) {
-      closeModal();
-    }
-  });
-
-  function validateForm() {
-    if (!onboardingForm) {
-      return false;
-    }
-
-    let isValid = true;
-    formFeedback.textContent = '';
-
-    const requiredFields = onboardingForm.querySelectorAll('input[required]');
-    requiredFields.forEach((field) => {
-      const shouldCheckValue = field.type !== 'radio';
-      const fieldValid = field.type === 'radio'
-        ? onboardingForm.querySelector(`input[name="${field.name}"]:checked`)
-        : field.value.trim();
-
-      if (!fieldValid) {
-        isValid = false;
-        if (shouldCheckValue) {
-          field.classList.add('invalid');
-        }
-      } else if (shouldCheckValue) {
-        field.classList.remove('invalid');
-      }
-    });
-
-    if (!isValid) {
-      formFeedback.textContent = 'Merci de remplir tous les champs obligatoires avant de continuer.';
-    }
-
-    return isValid;
-  }
-
-  async function submitNetlifyForm(formData) {
-    await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    });
   }
 
   async function mountEmbeddedCheckout(clientSecret) {
@@ -310,11 +141,11 @@ function initPurchaseTunnel() {
     embeddedCheckout.mount('#checkout');
   }
 
-  async function createCheckoutSession(payload) {
+  async function createCheckoutSession(pack) {
     const response = await fetch('/.netlify/functions/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ pack })
     });
 
     const data = await response.json().catch(() => ({}));
@@ -327,7 +158,7 @@ function initPurchaseTunnel() {
   }
 
   async function initializePayment() {
-    if (!selectedPack || !formSubmitted || !waiverCheckbox.checked) {
+    if (!selectedPack) {
       return;
     }
 
@@ -335,69 +166,69 @@ function initPurchaseTunnel() {
     paymentError.hidden = true;
     paymentError.textContent = '';
 
-    const formData = new FormData(onboardingForm);
-    formData.set('waiver_accepted', 'oui');
-    const payload = {
-      pack: selectedPack.pack,
-      formData: Object.fromEntries(formData.entries())
-    };
-
     try {
       await teardownEmbeddedCheckout();
       checkoutContainer.innerHTML = '';
-      const clientSecret = await createCheckoutSession(payload);
+      const clientSecret = await createCheckoutSession(selectedPack.pack);
       await mountEmbeddedCheckout(clientSecret);
-      checkoutHint.classList.add('is-hidden');
-      checkoutContainer.classList.remove('is-locked');
-      checkoutContainer.classList.add('is-ready');
-      checkoutContainer.setAttribute('aria-hidden', 'false');
     } catch (error) {
       paymentError.hidden = false;
       paymentError.textContent = error.message || 'Une erreur est survenue lors de la création du paiement.';
-      waiverCheckbox.checked = false;
     } finally {
       loadingState.hidden = true;
     }
   }
 
-  onboardingForm?.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    if (!selectedPack || !validateForm()) {
+  async function openModal() {
+    if (!selectedPack) {
       return;
     }
 
-    submitButton.disabled = true;
-
-    try {
-      const formData = new FormData(onboardingForm);
-      await submitNetlifyForm(formData);
-      formSubmitted = true;
-      setStep('payment');
-    } catch (_) {
-      formFeedback.textContent = 'Une erreur est survenue lors de l\'envoi du formulaire. Réessayez.';
-    } finally {
-      submitButton.disabled = false;
-    }
-  });
-
-  waiverCheckbox?.addEventListener('change', async () => {
-    if (!waiverCheckbox.checked) {
-      resetPaymentStep();
-      await teardownEmbeddedCheckout();
-      return;
-    }
-
+    syncSelectedPackSummary();
+    lastFocusedElement = document.activeElement;
+    modalOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    paymentTitle?.focus();
     await initializePayment();
+  }
+
+  async function closeModal(keepSelection = false) {
+    modalOverlay.hidden = true;
+    document.body.style.overflow = '';
+    paymentError.hidden = true;
+    paymentError.textContent = '';
+    loadingState.hidden = true;
+    await teardownEmbeddedCheckout();
+    checkoutContainer.innerHTML = '';
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
+
+    if (!keepSelection) {
+      lastFocusedElement = null;
+    }
+  }
+
+  function goToOffers() {
+    closeModal(true);
+    offersSection?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  stickyBarCta?.addEventListener('click', openModal);
+  modalClose?.addEventListener('click', () => closeModal());
+  changePackBtn?.addEventListener('click', goToOffers);
+
+  modalOverlay.addEventListener('click', (event) => {
+    if (event.target === modalOverlay) {
+      closeModal();
+    }
   });
 
-  onboardingForm?.querySelectorAll('input').forEach((input) => {
-    input.addEventListener('input', () => {
-      input.classList.remove('invalid');
-      if (formFeedback.textContent) {
-        formFeedback.textContent = '';
-      }
-    });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modalOverlay.hidden) {
+      closeModal();
+    }
   });
 
   modalOverlay.addEventListener('keydown', (event) => {
@@ -427,19 +258,109 @@ function initPurchaseTunnel() {
   });
 }
 
+function initMerciPage() {
+  const params = new URLSearchParams(window.location.search);
+  const pack = params.get('pack');
+  const sessionId = params.get('session_id');
+  const label = PACK_LABELS[pack];
+
+  if (!sessionId || !label) {
+    window.location.replace('index.html');
+    return;
+  }
+
+  const thanksPack = document.getElementById('thanksPack');
+  const dossierForm = document.getElementById('dossierForm');
+  const dossierSuccess = document.getElementById('dossierSuccess');
+  const dossierSubmit = document.getElementById('dossierSubmit');
+  const waiverCheckbox = document.getElementById('dossierWaiver');
+  const existingListingFields = document.getElementById('dossierExistingFields');
+  const newListingMessage = document.getElementById('dossierNewMessage');
+  const googleAccountEmail = document.getElementById('dossierGoogleEmail');
+  const selectedPackField = document.getElementById('dossierPackField');
+  const sessionIdField = document.getElementById('dossierSessionField');
+
+  if (thanksPack) {
+    thanksPack.textContent = `Votre pack ${label.name} est activé.`;
+  }
+
+  if (selectedPackField) {
+    selectedPackField.value = pack;
+  }
+
+  if (sessionIdField) {
+    sessionIdField.value = sessionId;
+  }
+
+  const conversionKey = `purchase_tracked_${sessionId}`;
+  if (!sessionStorage.getItem(conversionKey) && typeof gtag === 'function') {
+    gtag('event', 'purchase', {
+      transaction_id: sessionId,
+      value: label.amount,
+      currency: 'EUR',
+      items: [{
+        item_id: pack,
+        item_name: label.name,
+        price: label.amount,
+        quantity: 1
+      }]
+    });
+    sessionStorage.setItem(conversionKey, '1');
+  }
+
+  function updateListingFields() {
+    const selectedStatus = dossierForm?.querySelector('input[name="google_listing_status"]:checked')?.value;
+    const isExisting = selectedStatus === 'existing';
+    const isNew = selectedStatus === 'new';
+
+    existingListingFields.hidden = !isExisting;
+    newListingMessage.hidden = !isNew;
+    googleAccountEmail.required = isExisting;
+  }
+
+  function syncSubmitState() {
+    dossierSubmit.disabled = !waiverCheckbox.checked;
+  }
+
+  dossierForm?.querySelectorAll('input[name="google_listing_status"]').forEach((input) => {
+    input.addEventListener('change', updateListingFields);
+  });
+
+  waiverCheckbox?.addEventListener('change', syncSubmitState);
+  syncSubmitState();
+
+  dossierForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!waiverCheckbox.checked) {
+      return;
+    }
+
+    dossierSubmit.disabled = true;
+
+    try {
+      const formData = new FormData(dossierForm);
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      });
+
+      dossierForm.hidden = true;
+      dossierSuccess.hidden = false;
+    } catch (_) {
+      dossierSubmit.disabled = false;
+    }
+  });
+
+  dossierForm?.querySelectorAll('input').forEach((input) => {
+    input.addEventListener('input', () => input.classList.remove('invalid'));
+  });
+}
+
+initGoogleAdsMode();
 initPurchaseTunnel();
 
-const PACK_LABELS = {
-  essentiel: { name: 'Essentiel', amount: 69 },
-  populaire: { name: 'Populaire', amount: 99 },
-  premium: { name: 'Premium', amount: 179 }
-};
-
 if (window.location.pathname.endsWith('/merci.html')) {
-  const packFromQuery = new URLSearchParams(window.location.search).get('pack');
-  const label = PACK_LABELS[packFromQuery];
-  const thanksPack = document.getElementById('thanksPack');
-  if (label && thanksPack) {
-    thanksPack.textContent = `Votre formule ${label.name} a bien été prise en compte.`;
-  }
+  initMerciPage();
 }

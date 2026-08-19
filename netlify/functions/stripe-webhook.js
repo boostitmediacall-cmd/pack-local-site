@@ -37,14 +37,10 @@ exports.handler = async (event) => {
           `Pack : ${metadata.pack_label || pack}`,
           `Prix : ${packPrice}`,
           '',
-          `Nom : ${metadata.full_name || ''}`,
-          `Etablissement : ${metadata.business_name || ''}`,
-          `Email : ${metadata.email || session.customer_details?.email || ''}`,
-          `Telephone : ${metadata.phone || ''}`,
-          `Ville / code postal : ${metadata.location || ''}`,
-          `Statut fiche Google : ${metadata.google_listing_status || ''}`,
-          `Email compte Google : ${metadata.google_account_email || ''}`,
-          `Lien fiche Google : ${metadata.google_listing_url || ''}`
+          `Email Stripe : ${session.customer_details?.email || 'Non renseigne'}`,
+          `Session Stripe : ${session.id}`,
+          '',
+          'Le client finalisera son dossier sur la page merci.html apres paiement.'
         ].join('\n')
       });
     }
