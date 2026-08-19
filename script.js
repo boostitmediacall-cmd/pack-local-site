@@ -24,6 +24,7 @@ if (burger && nav) {
   });
 }
 
+/* ---------- Reveal on scroll ---------- */
 const revealEls = document.querySelectorAll('.reveal');
 
 if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -40,3 +41,24 @@ if (reduceMotion || !('IntersectionObserver' in window)) {
 
   revealEls.forEach(el => observer.observe(el));
 }
+
+/* ---------- Pack selector + sticky bar ---------- */
+const planButtons = document.querySelectorAll('.plan-cta');
+const stickyBar = document.getElementById('stickyBar');
+const stickyBarText = document.getElementById('stickyBarText');
+const stickyBarLink = document.getElementById('stickyBarLink');
+
+planButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.offer-card').forEach(c => c.classList.remove('selected'));
+    btn.closest('.offer-card').classList.add('selected');
+
+    const name = btn.dataset.packName;
+    const price = btn.dataset.packPrice;
+    const stripe = btn.dataset.stripe;
+
+    stickyBarText.textContent = 'Pack ' + name + ' sélectionné · ' + price + '€/mois';
+    stickyBarLink.href = stripe;
+    stickyBar.classList.add('visible');
+  });
+});
