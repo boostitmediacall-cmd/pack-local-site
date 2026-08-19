@@ -11,19 +11,65 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="section">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+    <a class="logo" href="index.html" aria-label="Pack Local">
+      <span class="logo-pin" aria-hidden="true"></span>
+      <span>Pack Local</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <a href="index.html#offres">Offres</a>
+      <a href="index.html#methode">Méthode</a>
+      <a href="index.html#comparatif">Avis</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-gradient header-button" href="index.html#offres">Voir les offres</a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="contenu" class="section">
   <div class="wrap">
     <div class="selected-pack-card" style="max-width:720px;margin:0 auto 24px;">
       <p class="eyebrow">Confirmation</p>
       <h1 style="font-size:clamp(2.2rem,4vw,3.4rem);">Merci !</h1>
       <p id="thanksPack">Nous vous contactons sous 24 à 48h pour démarrer.</p>
-      <p>Un email de confirmation Stripe vous sera egalement envoye automatiquement.</p>
+      <p>Un email de confirmation Stripe vous sera également envoyé automatiquement.</p>
     </div>
     <div style="display:flex;justify-content:center;">
       <a class="btn btn-gradient btn-lg" href="index.html#offres">Revenir aux offres</a>
     </div>
   </div>
 </main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <a class="logo" href="index.html">
+        <span class="logo-pin" aria-hidden="true"></span>
+        <span>Pack Local</span>
+      </a>
+      <p class="footer-text">SEO local &amp; optimisation Google Business Profile</p>
+    </div>
+    <nav class="footer-links" aria-label="Liens de pied de page">
+      <a href="index.html#offres">Offres</a>
+      <a href="index.html#methode">Méthode</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>© 2026 Pack Local. Tous droits réservés.</p>
+    <div class="footer-legal">
+      <a href="cgv.html">CGV</a>
+      <a href="#mentions-legales-a-remplacer">Mentions légales à compléter</a>
+    </div>
+  </div>
+</footer>
+
 <script src="script.js"></script>
 </body>
 </html>

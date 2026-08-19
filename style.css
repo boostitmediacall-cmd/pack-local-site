@@ -645,6 +645,33 @@ h3{font-size:1.35rem;}
   font-size:.92rem;
 }
 
+.footer-legal{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+}
+
+.footer-legal a:hover{color:var(--ink);}
+
+.legal-page{background:var(--paper);}
+.legal-content{max-width:760px;}
+.legal-content h1{margin-bottom:28px;font-size:clamp(2rem,4vw,3rem);}
+.legal-content h2{
+  margin:32px 0 12px;
+  font-size:1.35rem;
+}
+.legal-content p{
+  margin-bottom:12px;
+  color:var(--grey);
+  max-width:68ch;
+}
+
+.waiver-box a{
+  color:var(--blue);
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+
 .sticky-bar{
   position:fixed;
   left:20px;
