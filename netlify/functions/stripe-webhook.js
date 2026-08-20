@@ -3,7 +3,7 @@ const { Resend } = require('resend');
 
 const PACK_PRICES = {
   essentiel: '69€/mois',
-  populaire: '99€/mois',
+  boost: '99€/mois',
   premium: '179€/mois'
 };
 

@@ -2,7 +2,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 
 const PACK_LABELS = {
   essentiel: { name: 'Essentiel', amount: 69 },
-  populaire: { name: 'Populaire', amount: 99 },
+  boost: { name: 'Boost', amount: 99 },
   premium: { name: 'Premium', amount: 179 }
 };
 

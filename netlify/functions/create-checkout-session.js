@@ -2,13 +2,13 @@ const Stripe = require('stripe');
 
 const PACK_LABELS = {
   essentiel: 'Essentiel',
-  populaire: 'Populaire',
+  boost: 'Boost',
   premium: 'Premium'
 };
 
 const PRICE_ENV_KEYS = {
   essentiel: 'STRIPE_PRICE_ESSENTIEL',
-  populaire: 'STRIPE_PRICE_POPULAIRE',
+  boost: 'STRIPE_PRICE_BOOST',
   premium: 'STRIPE_PRICE_PREMIUM'
 };
 
