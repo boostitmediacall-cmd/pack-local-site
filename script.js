@@ -522,7 +522,56 @@ function initMerciPage() {
 
 initGoogleAdsMode();
 initPurchaseTunnel();
+initMobileCtaBar();
+initPremiumUrgency();
 
-if (window.location.pathname.endsWith('/merci.html')) {
+if (window.location.pathname.endsWith('/merci.html') || window.location.pathname.endsWith('merci.html')) {
   initMerciPage();
 }
+
+function initPremiumUrgency() {
+  const banner = document.getElementById('premiumUrgency');
+  const label = document.getElementById('premiumSlotsLabel');
+  if (!banner || !label) {
+    return;
+  }
+  const slots = banner.dataset.premiumSlots;
+  if (slots) {
+    label.textContent = slots;
+  }
+}
+
+function initMobileCtaBar() {
+  const bar = document.getElementById('mobileCtaBar');
+  const modalOverlay = document.getElementById('modalOverlay');
+  if (!bar) {
+    return;
+  }
+
+  const mq = window.matchMedia('(max-width: 720px)');
+
+  function sync() {
+    const show = mq.matches
+      && !document.body.classList.contains('sticky-visible')
+      && !(modalOverlay && !modalOverlay.hidden);
+
+    bar.hidden = !show;
+    document.body.classList.toggle('has-mobile-cta', show);
+    document.body.classList.toggle('modal-open', Boolean(modalOverlay && !modalOverlay.hidden));
+  }
+
+  mq.addEventListener('change', sync);
+  sync();
+
+  if (modalOverlay) {
+    const observer = new MutationObserver(sync);
+    observer.observe(modalOverlay, { attributes: true, attributeFilter: ['hidden'] });
+  }
+
+  const stickyBar = document.getElementById('stickyBar');
+  if (stickyBar) {
+    const stickyObserver = new MutationObserver(sync);
+    stickyObserver.observe(stickyBar, { attributes: true, attributeFilter: ['hidden'] });
+  }
+}
+

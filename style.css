@@ -53,6 +53,7 @@ main,
 header,
 footer,
 .sticky-bar,
+.mobile-cta-bar,
 .modal-overlay,
 .whatsapp-fab{position:relative;z-index:2;}
 
@@ -77,6 +78,7 @@ h3{font-size:1.35rem;}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);}
 .section{padding:96px 0;}
 .section-title{margin-bottom:24px;}
+.section-title-wide{max-width:22ch;}
 .section-intro,
 .section-footnote{max-width:68ch;color:var(--grey);}
 .section-footnote{margin:22px auto 0;text-align:center;font-size:.92rem;}
@@ -115,7 +117,10 @@ h3{font-size:1.35rem;}
 .pricing-card,
 .method-card,
 .stat-card,
-.comparison-card{
+.comparison-card,
+.contact-card,
+.guarantee-card,
+.testimonial-card{
   transition:var(--transition);
 }
 
@@ -258,6 +263,24 @@ h3{font-size:1.35rem;}
 
 .nav a:hover{color:var(--ink);}
 .header-button{white-space:nowrap;}
+
+.header-phone{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--grey);
+  font-weight:600;
+  font-size:.92rem;
+  white-space:nowrap;
+}
+
+.header-phone:hover,
+.header-phone:focus-visible{color:var(--ink);}
+
+.header-phone-icon{
+  flex:0 0 auto;
+  color:var(--blue);
+}
 
 .burger{
   display:none;
@@ -621,7 +644,234 @@ h3{font-size:1.35rem;}
   margin-top:18px;
   text-align:center;
   color:var(--grey);
-  font-size:.84rem;
+  font-size:.92rem;
+}
+
+.comparison-label{
+  margin-bottom:8px;
+  font-family:"JetBrains Mono",monospace;
+  font-size:.78rem;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--grey);
+}
+
+.comparison-card.active .comparison-label{color:var(--blue);}
+
+/* Urgency banner above pricing */
+.urgency-banner{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 28px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:var(--yellow-wash);
+  border:1px solid rgba(251,188,5,.35);
+  color:var(--ink);
+  font-size:.92rem;
+}
+
+.urgency-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--yellow);
+  box-shadow:0 0 0 4px rgba(251,188,5,.25);
+}
+
+/* Guarantees */
+.guarantee-grid{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:18px;
+}
+
+.guarantee-card{
+  padding:26px 22px;
+  border:1px solid rgba(228,230,233,.7);
+  border-radius:var(--radius-sm);
+  background:var(--white);
+  box-shadow:var(--shadow-soft);
+}
+
+.guarantee-card:hover{transform:translateY(-4px);}
+
+.guarantee-icon{
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  margin-bottom:16px;
+  border-radius:14px;
+  font-family:"JetBrains Mono",monospace;
+  font-weight:500;
+  font-size:1rem;
+  color:var(--ink);
+}
+
+.guarantee-card h3{margin-bottom:10px;}
+.guarantee-card p{color:var(--grey);font-size:.95rem;}
+
+/* Testimonials */
+.testimonials-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:18px;
+  margin-top:8px;
+}
+
+.testimonial-card{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding:28px 24px;
+  border:1px solid rgba(228,230,233,.7);
+  border-radius:var(--radius);
+  background:var(--white);
+  box-shadow:var(--shadow-soft);
+}
+
+.testimonial-card:hover{transform:translateY(-4px);}
+
+.testimonial-stars{
+  color:var(--yellow);
+  letter-spacing:.08em;
+  font-size:1rem;
+}
+
+.testimonial-quote{
+  color:var(--ink);
+  line-height:1.55;
+  flex:1;
+}
+
+.testimonial-author{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:auto;
+}
+
+.testimonial-avatar{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  font-family:"JetBrains Mono",monospace;
+  font-size:.78rem;
+  font-weight:500;
+  color:var(--ink);
+}
+
+.testimonial-name{font-weight:600;}
+.testimonial-meta{color:var(--grey);font-size:.88rem;}
+
+/* About page */
+.about-layout{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:40px;
+  align-items:start;
+}
+
+.about-photo-slot{
+  display:grid;
+  place-items:center;
+  aspect-ratio:1;
+  max-width:320px;
+  border-radius:var(--radius);
+  border:1px dashed rgba(66,133,244,.45);
+  background:linear-gradient(160deg,var(--blue-wash),var(--green-wash));
+  color:var(--grey);
+  text-align:center;
+  padding:24px;
+  font-size:.95rem;
+}
+
+.about-photo-slot strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--ink);
+  font-family:"Fraunces",serif;
+  font-size:1.2rem;
+}
+
+.about-copy .section-intro{margin-bottom:18px;}
+.about-copy p{margin-bottom:14px;color:var(--grey);max-width:62ch;}
+.about-name{
+  margin:10px 0 4px;
+  font-family:"Fraunces",serif;
+  font-size:1.5rem;
+  font-weight:600;
+  color:var(--ink);
+}
+.about-role{color:var(--grey);font-size:.95rem;}
+
+/* Contact page */
+.contact-intro{margin-bottom:36px;}
+
+.contact-channels{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:18px;
+  max-width:960px;
+}
+
+.contact-card{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:28px 24px;
+  border:1px solid rgba(228,230,233,.7);
+  border-radius:var(--radius);
+  background:var(--white);
+  box-shadow:var(--shadow-soft);
+  transition:var(--transition);
+}
+
+.contact-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-strong);
+}
+
+.contact-icon{
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  margin-bottom:6px;
+  border-radius:14px;
+  color:var(--ink);
+}
+
+.contact-label{
+  font-family:"JetBrains Mono",monospace;
+  font-size:.78rem;
+  font-weight:500;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--grey);
+}
+
+.contact-value{
+  font-weight:600;
+  font-size:1.05rem;
+  color:var(--ink);
+}
+
+@media (max-width: 1040px){
+  .guarantee-grid{grid-template-columns:1fr 1fr;}
+  .testimonials-grid{grid-template-columns:1fr 1fr;}
+  .about-layout{grid-template-columns:1fr;}
+  .contact-channels{grid-template-columns:1fr;}
+}
+
+/* Mobile CTA bar */
+.mobile-cta-bar{
+  display:none;
 }
 
 .faq-list{
@@ -705,9 +955,11 @@ h3{font-size:1.35rem;}
   max-width:68ch;
 }
 .legal-content li{margin-bottom:8px;}
-.legal-content code{
-  font-family:"JetBrains Mono",monospace;
-  font-size:.88em;
+.legal-content a,
+.about-copy a{
+  color:var(--blue);
+  text-decoration:underline;
+  text-underline-offset:2px;
 }
 
 .waiver-box a{
@@ -1283,6 +1535,15 @@ body.cookie-banner-visible.sticky-visible .sticky-bar{
   .nav.open{display:flex;}
   .burger{display:flex;}
   .header-button{display:none;}
+  .header-phone-number{display:none;}
+  .header-phone{
+    width:44px;
+    height:44px;
+    justify-content:center;
+    border:1px solid var(--grey-light);
+    border-radius:999px;
+    background:var(--white);
+  }
   .trust-line,
   .cta-band-inner,
   .cta-final-inner,
@@ -1297,6 +1558,8 @@ body.cookie-banner-visible.sticky-visible .sticky-bar{
   .stats-grid,
   .process-grid,
   .comparison-stage,
+  .guarantee-grid,
+  .testimonials-grid,
   .form-grid{
     grid-template-columns:1fr;
   }
@@ -1314,6 +1577,53 @@ body.cookie-banner-visible.sticky-visible .sticky-bar{
   body.sticky-visible .whatsapp-fab{
     bottom:128px;
   }
+
+  /* Sticky CTA mobile : offres + WhatsApp */
+  .mobile-cta-bar{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:42;
+    display:flex;
+    gap:10px;
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+    background:rgba(255,255,255,.96);
+    border-top:1px solid var(--grey-light);
+    box-shadow:0 -12px 28px rgba(20,22,26,.08);
+    backdrop-filter:blur(12px);
+  }
+
+  .mobile-cta-bar[hidden]{display:none;}
+
+  .mobile-cta-primary,
+  .mobile-cta-whatsapp{
+    flex:1 1 0;
+    justify-content:center;
+    min-height:48px;
+  }
+
+  body.has-mobile-cta{
+    padding-bottom:84px;
+  }
+
+  body.has-mobile-cta .whatsapp-fab{
+    display:none;
+  }
+
+  body.sticky-visible .mobile-cta-bar,
+  body.modal-open .mobile-cta-bar{
+    display:none !important;
+  }
+
+  body.cookie-banner-visible .mobile-cta-bar{
+    bottom:auto;
+    /* stays above cookie banner via padding on body */
+  }
+
+  body.cookie-banner-visible.has-mobile-cta{
+    padding-bottom:calc(84px + 200px);
+  }
 }
 
 @media (max-width: 420px){
@@ -1325,6 +1635,8 @@ body.cookie-banner-visible.sticky-visible .sticky-bar{
   .comparison-card,
   .method-card,
   .stat-card,
+  .guarantee-card,
+  .testimonial-card,
   .process-grid li{padding:24px 20px;}
   .whatsapp-fab{
     right:14px;

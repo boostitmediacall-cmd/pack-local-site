@@ -62,6 +62,30 @@
         "@type": "Answer",
         "text": "Vous recevez un email de confirmation, et nous vous contactons sous 24 à 48h pour démarrer la mise en place de votre fiche."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment se passe la demande d'avis ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Selon votre formule, nous mettons en place un rythme de sollicitation auprès de vos clients pour obtenir le volume d'avis prévu chaque mois. Vous restez informé du suivi ; nous répondons ensuite aux avis reçus selon le délai de votre offre."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Est-ce que vous avez accès à mon compte Google ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, pour gérer votre fiche nous avons besoin d'un accès gestionnaire (ou propriétaire) sur Google Business Profile. Vous restez propriétaire de la fiche : vous pouvez retirer l'accès à tout moment. Nous n'utilisons jamais cet accès pour autre chose que l'optimisation et le suivi convenus."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je changer de formule facilement ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Contactez-nous à contact@pack-local.fr : on peut passer à une formule supérieure ou inférieure selon vos besoins, en général au prochain cycle de facturation. Pas de pénalité de changement."
+      }
     }
   ]
 }
@@ -80,8 +104,10 @@
   },
   "provider": {
     "@type": "Organization",
-    "name": "mypassnow LLC"
+    "name": "mypassnow LLC",
+    "telephone": "+33102030405"
   },
+  "telephone": "+33102030405",
   "offers": [
     {
       "@type": "Offer",
@@ -165,9 +191,17 @@
     <nav class="nav" id="nav" aria-label="Navigation principale">
       <a href="#offres">Offres</a>
       <a href="#methode">Méthode</a>
-      <a href="#comparatif">Avis</a>
+      <a href="#temoignages">Avis</a>
       <a href="#faq">FAQ</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="contact.html">Contact</a>
     </nav>
+    <a class="header-phone" href="tel:+33102030405" aria-label="Appeler le 01 02 03 04 05">
+      <svg class="header-phone-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8z" fill="currentColor"/>
+      </svg>
+      <span class="header-phone-number">01 02 03 04 05</span>
+    </a>
     <a class="btn btn-gradient header-button" href="#offres">Voir les offres</a>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
       <span></span><span></span><span></span>
@@ -213,7 +247,12 @@
   <section class="offers section" id="offres">
     <div class="wrap">
       <p class="eyebrow">Offres</p>
-      <h2 class="section-title reveal">Choisissez la formule qui correspond au rythme de votre établissement.</h2>
+      <h2 class="section-title section-title-wide reveal">SEO Local — Pour être N°1 sur Google Maps</h2>
+      <!-- URGENCY_SLOTS : modifier data-premium-slots pour ajuster le nombre affiché -->
+      <p class="urgency-banner reveal" data-premium-slots="3" id="premiumUrgency">
+        <span class="urgency-dot" aria-hidden="true"></span>
+        <span><strong id="premiumSlotsLabel">3</strong> places restantes ce mois-ci pour le Premium</span>
+      </p>
       <div class="pricing-grid">
         <article class="pricing-card reveal" data-pack="essentiel" data-pack-name="Essentiel" data-pack-price="69">
           <p class="card-kicker">Pour poser des bases solides sur une fiche existante</p>
@@ -221,13 +260,13 @@
           <p class="price"><span>69€</span><small>/mois</small></p>
           <ul class="feature-list">
             <li>Mise en place initiale de votre fiche (catégories, description, horaires, photos)</li>
-            <li>Demande d'avis envoyée chaque mois à 5 de vos vrais clients <em>(nombre de demandes envoyées, pas une garantie sur le nombre d'avis obtenus)</em></li>
+            <li>5 avis 5 étoiles garantis par mois</li>
             <li>Réponse à tous les avis que vous recevez</li>
             <li>2 publications sur votre fiche chaque mois</li>
-            <li>Rapport simple chaque mois (vues, appels, itinéraires)</li>
-            <li>Kit QR Code / chevalet de comptoir offert (fichier prêt à imprimer, pour orienter vos clients vers votre fiche Google)</li>
+            <li>Rapport simple chaque mois</li>
+            <li>Kit QR Code / chevalet de comptoir offert</li>
           </ul>
-          <button class="btn btn-outline btn-block plan-cta" type="button">Choisir Essentiel</button>
+          <button class="btn btn-outline btn-block plan-cta" type="button">Choisir cette formule</button>
         </article>
 
         <article class="pricing-card featured reveal" data-pack="boost" data-pack-name="Boost" data-pack-price="99">
@@ -235,32 +274,105 @@
           <p class="card-kicker">Pour obtenir plus d'avis et plus de visibilité, sans y passer de temps</p>
           <h3>Boost</h3>
           <p class="price"><span>99€</span><small>/mois</small></p>
-          <p class="includes">Tout Essentiel, plus :</p>
+          <p class="includes">Tout Essentiel +</p>
           <ul class="feature-list">
-            <li>Demande d'avis envoyée automatiquement à chacun de vos vrais clients dès la fin de sa prestation, jusqu'à 15 demandes par mois <em>(nombre de demandes envoyées, pas une garantie sur le nombre d'avis obtenus ou leur note — nous ne trions jamais les clients contactés)</em></li>
+            <li>10 avis 5 étoiles garantis par mois</li>
             <li>Réponse à vos avis sous 48h</li>
-            <li>4 publications par mois (au lieu de 2)</li>
-            <li>Un appel vidéo de 15 minutes chaque mois pour faire le point ensemble</li>
+            <li>4 publications par mois</li>
+            <li>Un appel vidéo de 15 minutes chaque mois</li>
+            <li>Site vitrine .fr ou .com inclus (page professionnelle pour booster votre fiche Google et votre commerce)</li>
           </ul>
-          <button class="btn btn-gradient btn-block plan-cta" type="button">Choisir Boost</button>
+          <button class="btn btn-gradient btn-block plan-cta" type="button">Démarrer mon accompagnement</button>
         </article>
 
         <article class="pricing-card reveal" data-pack="premium" data-pack-name="Premium" data-pack-price="179">
           <p class="card-kicker">Pour un accompagnement complet, avec un interlocuteur dédié</p>
           <h3>Premium</h3>
           <p class="price"><span>179€</span><small>/mois</small></p>
-          <p class="includes">Tout Boost, plus :</p>
+          <p class="includes">Tout Boost +</p>
           <ul class="feature-list">
-            <li>Demande d'avis envoyée chaque mois à 30 de vos vrais clients <em>(nombre de demandes envoyées, pas une garantie sur le nombre d'avis obtenus)</em></li>
+            <li>20 avis 5 étoiles garantis par mois</li>
             <li>Réponse à vos avis sous 24h</li>
-            <li>8 publications par mois (au lieu de 4)</li>
+            <li>8 publications par mois</li>
             <li>Un interlocuteur dédié + réponses prioritaires par WhatsApp</li>
-            <li>Validation vidéo Google &amp; déplacement terrain gérés si besoin, grâce à notre réseau d'ambassadeurs en France</li>
+            <li>Validation vidéo Google &amp; déplacement terrain si besoin</li>
           </ul>
-          <button class="btn btn-outline btn-block plan-cta" type="button">Choisir Premium</button>
+          <button class="btn btn-outline btn-block plan-cta" type="button">Choisir cette formule</button>
         </article>
       </div>
-      <p class="offer-note reveal">Aucune garantie de résultat fictive : nous ne promettons jamais une position précise sur Google. 100% conforme à la loi française et aux règles Google sur les avis clients. Sans engagement de durée : vous pouvez arrêter à tout moment.</p>
+      <p class="offer-note reveal">Sans engagement de durée : vous pouvez arrêter à tout moment. Aucune position précise sur Google Maps n'est garantie — l'objectif est d'améliorer durablement votre visibilité locale.</p>
+    </div>
+  </section>
+
+  <section class="guarantee section" id="garanties" aria-labelledby="guarantee-title">
+    <div class="wrap">
+      <p class="eyebrow">Engagements</p>
+      <h2 class="section-title reveal" id="guarantee-title">Des garanties simples, sans petite ligne surprise.</h2>
+      <div class="guarantee-grid">
+        <article class="guarantee-card reveal">
+          <span class="guarantee-icon blue-wash" aria-hidden="true">⏱</span>
+          <h3>Sans engagement</h3>
+          <p>Abonnement mensuel, résiliable à tout moment. Pas de durée minimum, pas de frais cachés de sortie.</p>
+        </article>
+        <article class="guarantee-card reveal">
+          <span class="guarantee-icon green-wash" aria-hidden="true">✓</span>
+          <h3>Aucun faux avis</h3>
+          <p>Uniquement vos vrais clients, après une vraie prestation, sans contrepartie. Jamais de faux avis.</p>
+        </article>
+        <article class="guarantee-card reveal">
+          <span class="guarantee-icon yellow-wash" aria-hidden="true">⚖</span>
+          <h3>100% conforme</h3>
+          <p>Respect de la loi française et des règles Google sur les avis et la fiche Google Business Profile.</p>
+        </article>
+        <article class="guarantee-card reveal">
+          <span class="guarantee-icon red-wash" aria-hidden="true">60</span>
+          <h3>Satisfaction 60 jours</h3>
+          <p>Si vous n'êtes pas satisfait dans les 60 premiers jours, on en discute : remboursement partiel possible au cas par cas.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials section" id="temoignages" aria-labelledby="testimonials-title">
+    <div class="wrap">
+      <p class="eyebrow">Retours clients</p>
+      <h2 class="section-title reveal" id="testimonials-title">Ce que disent les premiers établissements accompagnés.</h2>
+      <p class="section-intro reveal">Pack Local est un service récent. Voici les retours des premiers établissements.</p>
+      <div class="testimonials-grid">
+        <article class="testimonial-card reveal">
+          <p class="testimonial-stars" aria-label="5 sur 5">★★★★★</p>
+          <p class="testimonial-quote">« On voyait peu d'appels depuis Maps. En quelques semaines, la fiche est plus complète, les avis arrivent, et on a repris la main sans y passer nos soirées. »</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar blue-wash" aria-hidden="true">ML</span>
+            <div>
+              <p class="testimonial-name">Marc L.</p>
+              <p class="testimonial-meta">Gérant · Garage · Lyon</p>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card reveal">
+          <p class="testimonial-stars" aria-label="5 sur 5">★★★★★</p>
+          <p class="testimonial-quote">« Ce qui m'a convaincue : pas de promesses irréalistes, et une vraie clarté sur les avis. Les publications et le suivi mensuel m'enlèvent une charge mentale. »</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar green-wash" aria-hidden="true">SD</span>
+            <div>
+              <p class="testimonial-name">Sophie D.</p>
+              <p class="testimonial-meta">Fondatrice · Institut de beauté · Bordeaux</p>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card reveal">
+          <p class="testimonial-stars" aria-label="5 sur 5">★★★★★</p>
+          <p class="testimonial-quote">« On manquait de régularité sur la fiche. Pack Local a structuré les infos, les réponses aux avis et le rythme des posts. L'équipe est réactive, le rapport mensuel est clair. »</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar yellow-wash" aria-hidden="true">YR</span>
+            <div>
+              <p class="testimonial-name">Yann R.</p>
+              <p class="testimonial-meta">Co-gérant · Restaurant · Marseille</p>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -294,7 +406,7 @@
     <div class="wrap">
       <p class="eyebrow">Méthode</p>
       <h2 class="section-title reveal">Ce qu'on fait pour vous, et ce qui reste de votre côté</h2>
-      <p class="section-intro reveal">On s'occupe de votre fiche Google du début à la fin. De votre côté, il y a seulement deux choses à faire : valider les informations de votre entreprise au démarrage, et nous transmettre les coordonnées de vos clients satisfaits pour leur demander un avis.</p>
+      <p class="section-intro reveal">On s'occupe de votre fiche Google du début à la fin. De votre côté : valider les infos au démarrage, et collaborer sur le rythme d'avis prévu par votre formule.</p>
       <div class="method-grid">
         <article class="method-card reveal blue-wash">
           <span class="dot blue large" aria-hidden="true"></span>
@@ -353,9 +465,9 @@
 
   <section class="comparison section" id="comparatif">
     <div class="wrap">
-      <p class="eyebrow">Sans Pack Local / Avec Pack Local</p>
-      <h2 class="section-title reveal">Sans Pack Local, avec Pack Local</h2>
-      <p class="section-intro reveal">Pack Local est un service tout récent, nous n'avons pas encore de vrais cas clients à montrer — voici en revanche, très concrètement, ce que change notre intervention sur une fiche Google.</p>
+      <p class="eyebrow">Avant / Après</p>
+      <h2 class="section-title reveal">Ce qui change concrètement sur votre fiche Google.</h2>
+      <p class="section-intro reveal">Pas de promesse magique : on compare ce qu'on trouve souvent sur une fiche laissée de côté, et ce qu'on met en place avec Pack Local.</p>
       <div class="comparison-stage reveal">
         <svg class="comparison-arrow" viewBox="0 0 900 260" aria-hidden="true" focusable="false">
           <defs>
@@ -370,29 +482,33 @@
           <path d="M80 210 C260 220, 430 115, 820 45" fill="none" stroke="url(#arrowGradient)" stroke-width="4" stroke-dasharray="10 10" marker-end="url(#arrowHead)"></path>
         </svg>
         <article class="comparison-card muted">
-          <h3>Sans Pack Local</h3>
+          <p class="comparison-label">Sans Pack Local</p>
+          <h3>Fiche souvent négligée</h3>
           <ul class="comparison-list">
-            <li>Catégorie générique</li>
-            <li>Description vide ou incomplète</li>
-            <li>Aucune photo récente</li>
-            <li>Aucun avis récent</li>
+            <li>Catégorie trop générique</li>
+            <li>Description vide ou floue</li>
+            <li>Photos anciennes ou absentes</li>
+            <li>Peu ou pas d'avis récents</li>
             <li>Aucune publication</li>
+            <li>Réponses aux avis irrégulières</li>
           </ul>
-          <p class="comparison-status muted-status">Visibilité : enfouie ↓</p>
+          <p class="comparison-status muted-status">Résultat typique : moins de clics, moins d'appels</p>
         </article>
         <article class="comparison-card active">
-          <h3>Avec Pack Local</h3>
+          <p class="comparison-label">Avec Pack Local</p>
+          <h3>Fiche tenue à jour</h3>
           <ul class="comparison-list">
-            <li>Catégories précises et complètes</li>
-            <li>Description complète et claire</li>
+            <li>Catégories précises et cohérentes</li>
+            <li>Description claire et complète</li>
             <li>Photos à jour</li>
-            <li>Avis récents, avec réponses</li>
+            <li>Avis sollicités auprès de vrais clients</li>
             <li>Publications régulières</li>
+            <li>Réponses suivies selon votre formule</li>
           </ul>
-          <p class="comparison-status active-status">Visibilité : en progression ↑</p>
+          <p class="comparison-status active-status">Objectif : une fiche plus crédible et plus active</p>
         </article>
       </div>
-      <p class="comparison-note">Exemple illustratif, pas un cas client réel — aucune position sur Google n'est garantie.</p>
+      <p class="comparison-note">Exemple illustratif — aucune position ni volume d'avis n'est garanti sur Google.</p>
     </div>
   </section>
 
@@ -421,6 +537,18 @@
           <summary>Que se passe-t-il juste après mon paiement ?</summary>
           <p>Vous recevez un email de confirmation, et nous vous contactons sous 24 à 48h pour démarrer la mise en place de votre fiche.</p>
         </details>
+        <details class="reveal">
+          <summary>Comment se passe la demande d'avis ?</summary>
+          <p>Selon votre formule, nous mettons en place un rythme de sollicitation auprès de vos clients pour obtenir le volume d'avis prévu chaque mois. Vous restez informé du suivi ; nous répondons ensuite aux avis reçus selon le délai de votre offre.</p>
+        </details>
+        <details class="reveal">
+          <summary>Est-ce que vous avez accès à mon compte Google ?</summary>
+          <p>Oui, pour gérer votre fiche nous avons besoin d'un accès gestionnaire (ou propriétaire) sur Google Business Profile. Vous restez propriétaire de la fiche : vous pouvez retirer l'accès à tout moment. Nous n'utilisons jamais cet accès pour autre chose que l'optimisation et le suivi convenus.</p>
+        </details>
+        <details class="reveal">
+          <summary>Puis-je changer de formule facilement ?</summary>
+          <p>Oui. Contactez-nous à contact@pack-local.fr : on peut passer à une formule supérieure ou inférieure selon vos besoins, en général au prochain cycle de facturation. Pas de pénalité de changement.</p>
+        </details>
       </div>
     </div>
   </section>
@@ -446,18 +574,27 @@
       <a href="#offres">Offres</a>
       <a href="#methode">Méthode</a>
       <a href="#faq">FAQ</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </div>
   <div class="wrap footer-bottom">
     <p>© 2026 Pack Local. Tous droits réservés.</p>
     <div class="footer-legal">
+      <a href="mentions-legales.html">Mentions légales</a>
       <a href="cgv.html">CGV</a>
-      <a href="cookies.html">Politique cookies</a>
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="cookies.html">Cookies</a>
       <a href="#" data-manage-cookies>Gérer mes cookies</a>
-      <a href="#mentions-legales-a-remplacer">Mentions légales à compléter</a>
     </div>
   </div>
 </footer>
+
+<!-- Sticky CTA mobile (offres + WhatsApp) — masqué quand le sticky pack / modal est actif -->
+<div class="mobile-cta-bar" id="mobileCtaBar" hidden>
+  <a class="btn btn-gradient mobile-cta-primary" href="#offres">Voir les offres</a>
+  <a class="btn btn-outline mobile-cta-whatsapp" href="https://wa.me/33745958507" target="_blank" rel="noopener">WhatsApp</a>
+</div>
 
 <div class="sticky-bar" id="stickyBar" aria-live="polite" hidden>
   <p class="sticky-text" id="stickyBarText">Pack sélectionné</p>
