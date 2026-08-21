@@ -1006,6 +1006,68 @@ h3{font-size:1.35rem;}
 
 .ads-mode .whatsapp-fab{display:none !important;}
 
+/* Landing Google Ads (demarrer.html) */
+.lp-ads .lp-header-inner{
+  justify-content:flex-start;
+  min-height:64px;
+}
+
+.lp-ads .logo{
+  margin-right:0;
+  cursor:default;
+  user-select:none;
+}
+
+.lp-ads .lp-hero{
+  padding-top:clamp(36px,6vw,64px);
+}
+
+.lp-ads .lp-hero-copy{
+  max-width:40rem;
+  margin:0 auto;
+  text-align:left;
+}
+
+.lp-ads .lp-offer-wrap{
+  max-width:34rem;
+  margin:0 auto;
+}
+
+.lp-ads .lp-offer-wrap .pricing-card.featured{
+  transform:none;
+}
+
+.lp-ads .lp-offer-wrap .pricing-card.featured:hover{
+  transform:translateY(-6px);
+}
+
+.lp-ads .lp-compare-link{
+  margin:18px 0 0;
+  text-align:center;
+  font-size:.9rem;
+}
+
+.lp-ads .lp-compare-link a{
+  color:var(--grey);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  font-weight:500;
+}
+
+.lp-ads .lp-compare-link a:hover,
+.lp-ads .lp-compare-link a:focus-visible{
+  color:var(--ink);
+}
+
+.lp-ads .lp-footer{
+  border-top:1px solid var(--grey-light);
+}
+
+.lp-ads .lp-footer-bottom{
+  padding-top:28px;
+  padding-bottom:28px;
+}
+
 .whatsapp-fab{
   position:fixed;
   right:20px;

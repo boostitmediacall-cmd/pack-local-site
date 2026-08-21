@@ -98,7 +98,10 @@ function initPurchaseTunnel() {
   let currentStep = 'form';
   let formPayload = null;
 
-  function setSelectedPack(card) {
+  const isLandingPage = document.body.classList.contains('lp-ads');
+  const packCompareUrl = document.body.dataset.packCompareUrl;
+
+  function setSelectedPack(card, { showSticky = !isLandingPage } = {}) {
     const pack = card.dataset.pack;
     const name = card.dataset.packName;
     const price = Number(card.dataset.packPrice);
@@ -108,9 +111,27 @@ function initPurchaseTunnel() {
     pricingCards.forEach((pricingCard) => pricingCard.classList.remove('selected'));
     card.classList.add('selected');
 
-    stickyBarText.textContent = `Pack ${name} sélectionné · ${price}€/mois`;
-    stickyBar.hidden = false;
-    document.body.classList.add('sticky-visible');
+    if (showSticky && stickyBar && stickyBarText) {
+      stickyBarText.textContent = `Pack ${name} sélectionné · ${price}€/mois`;
+      stickyBar.hidden = false;
+      document.body.classList.add('sticky-visible');
+    }
+  }
+
+  function resolvePackCard(packId) {
+    if (!packId) {
+      return null;
+    }
+    return document.querySelector(`.pricing-card[data-pack="${packId}"]`);
+  }
+
+  function openCheckoutForPack(packId) {
+    const card = resolvePackCard(packId) || resolvePackCard(document.body.dataset.defaultPack);
+    if (!card) {
+      return;
+    }
+    setSelectedPack(card);
+    openModal();
   }
 
   offersSection?.addEventListener('click', (event) => {
@@ -126,6 +147,16 @@ function initPurchaseTunnel() {
     }
 
     setSelectedPack(card);
+  });
+
+  document.querySelectorAll('[data-open-checkout]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const packId = button.dataset.pack
+        || button.closest('.pricing-card')?.dataset.pack
+        || document.body.dataset.defaultPack;
+      openCheckoutForPack(packId);
+    });
   });
 
   function syncSelectedPackSummary() {
@@ -369,6 +400,10 @@ function initPurchaseTunnel() {
 
   function goToOffers() {
     closeModal();
+    if (packCompareUrl) {
+      window.location.href = packCompareUrl;
+      return;
+    }
     offersSection?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
