@@ -790,9 +790,57 @@ h3{font-size:1.35rem;}
 /* About page */
 .about-layout{
   display:grid;
-  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
   gap:40px;
   align-items:start;
+}
+
+.about-logo-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  min-height:280px;
+  max-width:320px;
+  padding:40px 28px;
+  border-radius:var(--radius);
+  border:1px solid rgba(228,230,233,.7);
+  background:linear-gradient(160deg,var(--blue-wash),var(--green-wash));
+  box-shadow:var(--shadow-soft);
+  text-align:center;
+  position:sticky;
+  top:100px;
+}
+
+.about-logo-mark{
+  display:grid;
+  place-items:center;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:var(--white);
+  box-shadow:var(--shadow-soft);
+}
+
+.about-logo-mark .logo-pin{
+  width:22px;
+  height:22px;
+}
+
+.about-logo-name{
+  margin:0;
+  font-family:"Fraunces",serif;
+  font-size:1.85rem;
+  font-weight:600;
+  color:var(--ink);
+  letter-spacing:-.03em;
+}
+
+.about-logo-tag{
+  margin:0;
+  color:var(--grey);
+  font-size:.9rem;
 }
 
 .about-photo-slot{
@@ -818,7 +866,21 @@ h3{font-size:1.35rem;}
 }
 
 .about-copy .section-intro{margin-bottom:18px;}
+.about-copy h2{
+  margin:28px 0 12px;
+  font-size:clamp(1.35rem,2.4vw,1.75rem);
+  max-width:28ch;
+}
 .about-copy p{margin-bottom:14px;color:var(--grey);max-width:62ch;}
+.about-principles{
+  margin:0 0 18px;
+  padding-left:1.2rem;
+  color:var(--grey);
+  max-width:62ch;
+  list-style:disc;
+}
+.about-principles li{margin-bottom:10px;}
+.about-principles strong{color:var(--ink);}
 .about-name{
   margin:10px 0 4px;
   font-family:"Fraunces",serif;
