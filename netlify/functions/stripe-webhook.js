@@ -7,6 +7,11 @@ const PACK_PRICES = {
   premium: '179€/mois'
 };
 
+const GOOGLE_SITUATION_LABELS = {
+  existing: 'Fiche Google existante',
+  new: 'Creation de fiche Google de zero'
+};
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -27,20 +32,32 @@ exports.handler = async (event) => {
       const session = stripeEvent.data.object;
       const metadata = session.metadata || {};
       const pack = metadata.pack || 'inconnu';
-      const packPrice = PACK_PRICES[pack] || metadata.pack_price_eur || 'Prix non renseigne';
+      const packPrice = PACK_PRICES[pack] || 'Prix non renseigne';
+      const googleSituation = GOOGLE_SITUATION_LABELS[metadata.google_situation] || metadata.google_situation || 'Non renseigne';
 
       await resend.emails.send({
         from: 'Pack Local <onboarding@resend.dev>',
         to: process.env.OWNER_EMAIL,
         subject: `Nouvelle souscription Pack Local - ${metadata.pack_label || pack}`,
         text: [
+          '=== PAIEMENT ===',
           `Pack : ${metadata.pack_label || pack}`,
           `Prix : ${packPrice}`,
-          '',
           `Email Stripe : ${session.customer_details?.email || 'Non renseigne'}`,
           `Session Stripe : ${session.id}`,
           '',
-          'Le client finalisera son dossier sur la page merci.html apres paiement.'
+          '=== CLIENT ===',
+          `Nom & prenom : ${metadata.full_name || 'Non renseigne'}`,
+          `Etablissement : ${metadata.business_name || 'Non renseigne'}`,
+          `Telephone : ${metadata.phone || 'Non renseigne'}`,
+          `Ville : ${metadata.city || 'Non renseigne'}`,
+          `Code postal : ${metadata.postal_code || 'Non renseigne'}`,
+          '',
+          '=== FICHE GOOGLE ===',
+          `Situation : ${googleSituation}`,
+          `Email Google : ${metadata.google_email || 'Non renseigne'}`,
+          `Lien fiche Google : ${metadata.google_listing_url || 'Non renseigne'}`,
+          `Renonciation retractation : ${metadata.waiver_accepted || 'Non renseigne'}`
         ].join('\n')
       });
     }

@@ -71,16 +71,32 @@ function initPurchaseTunnel() {
   const stickyBarCta = document.getElementById('stickyBarCta');
   const modalClose = document.getElementById('modalClose');
   const changePackBtn = document.getElementById('changePackBtn');
+  const prevStepBtn = document.getElementById('prevStepBtn');
+  const stepForm = document.getElementById('stepForm');
+  const stepPayment = document.getElementById('stepPayment');
   const modalPackSummary = document.getElementById('modalPackSummary');
+  const dossierForm = document.getElementById('dossierForm');
+  const selectedPackField = document.getElementById('selectedPackField');
   const loadingState = document.getElementById('loadingState');
   const paymentError = document.getElementById('paymentError');
   const checkoutContainer = document.getElementById('checkout');
+  const formFeedback = document.getElementById('formFeedback');
+  const submitButton = document.getElementById('submitButton');
+  const existingListingFields = document.getElementById('existingListingFields');
+  const newListingMessage = document.getElementById('newListingMessage');
+  const googleAccountEmail = document.getElementById('googleAccountEmail');
+  const googleEmailStar = document.querySelector('.google-email-star');
+  const waiverCheckbox = document.getElementById('waiverCheckbox');
+  const waiverBox = document.getElementById('waiverBox');
+  const modalTitle = document.getElementById('modalTitle');
   const paymentTitle = document.getElementById('paymentTitle');
   const stripePublishableKey = document.querySelector('meta[name="stripe-publishable-key"]')?.content?.trim();
 
   let selectedPack = null;
   let embeddedCheckout = null;
   let lastFocusedElement = null;
+  let currentStep = 'form';
+  let formPayload = null;
 
   function setSelectedPack(card) {
     const pack = card.dataset.pack;
@@ -118,6 +134,40 @@ function initPurchaseTunnel() {
     }
 
     modalPackSummary.textContent = `${selectedPack.name} · ${selectedPack.price}€/mois`;
+    selectedPackField.value = selectedPack.pack;
+  }
+
+  function updateListingFields() {
+    const selectedStatus = dossierForm?.querySelector('input[name="google_listing_status"]:checked')?.value;
+    const isExisting = selectedStatus === 'existing';
+    const isNew = selectedStatus === 'new';
+
+    existingListingFields.hidden = !isExisting;
+    newListingMessage.hidden = !isNew;
+    googleAccountEmail.required = isExisting;
+    if (googleEmailStar) {
+      googleEmailStar.hidden = !isExisting;
+    }
+
+    if (!isExisting) {
+      googleAccountEmail.classList.remove('invalid');
+    }
+  }
+
+  dossierForm?.querySelectorAll('input[name="google_listing_status"]').forEach((input) => {
+    input.addEventListener('change', updateListingFields);
+  });
+
+  function focusStep(step) {
+    requestAnimationFrame(() => {
+      if (step === 'form') {
+        const firstField = dossierForm?.querySelector('input:not([type="hidden"]):not([name="bot-field"])');
+        (firstField || modalTitle)?.focus();
+        return;
+      }
+
+      paymentTitle?.focus();
+    });
   }
 
   async function teardownEmbeddedCheckout() {
@@ -125,6 +175,114 @@ function initPurchaseTunnel() {
       await embeddedCheckout.destroy();
     }
     embeddedCheckout = null;
+  }
+
+  function setStep(step) {
+    currentStep = step;
+
+    if (step === 'form') {
+      stepForm.hidden = false;
+      stepForm.classList.add('is-active');
+      stepPayment.hidden = true;
+      stepPayment.classList.remove('is-active');
+      changePackBtn.hidden = false;
+      prevStepBtn.hidden = true;
+      paymentError.hidden = true;
+      paymentError.textContent = '';
+      loadingState.hidden = true;
+      teardownEmbeddedCheckout();
+      checkoutContainer.innerHTML = '';
+      focusStep('form');
+      return;
+    }
+
+    stepForm.hidden = true;
+    stepForm.classList.remove('is-active');
+    stepPayment.hidden = false;
+    stepPayment.classList.remove('is-active');
+    void stepPayment.offsetWidth;
+    stepPayment.classList.add('is-active');
+    changePackBtn.hidden = true;
+    prevStepBtn.hidden = false;
+    focusStep('payment');
+  }
+
+  function validateForm() {
+    let isValid = true;
+    formFeedback.textContent = '';
+    waiverBox.classList.remove('invalid');
+
+    dossierForm.querySelectorAll('input').forEach((field) => {
+      if (field.type !== 'radio' && field.type !== 'checkbox') {
+        field.classList.remove('invalid');
+      }
+    });
+
+    const requiredFields = dossierForm.querySelectorAll('input[required]');
+    requiredFields.forEach((field) => {
+      if (field.type === 'radio') {
+        const checked = dossierForm.querySelector(`input[name="${field.name}"]:checked`);
+        if (!checked) {
+          isValid = false;
+        }
+        return;
+      }
+
+      if (!field.value.trim()) {
+        field.classList.add('invalid');
+        isValid = false;
+      }
+    });
+
+    if (!waiverCheckbox.checked) {
+      waiverBox.classList.add('invalid');
+      isValid = false;
+    }
+
+    if (!isValid) {
+      formFeedback.textContent = 'Merci de remplir tous les champs obligatoires et de cocher la case de renonciation avant de payer.';
+    }
+
+    return isValid;
+  }
+
+  function buildFormPayload() {
+    const formData = new FormData(dossierForm);
+    const googleSituation = formData.get('google_listing_status') || '';
+
+    return {
+      full_name: String(formData.get('full_name') || '').trim(),
+      business_name: String(formData.get('business_name') || '').trim(),
+      phone: String(formData.get('phone') || '').trim(),
+      city: String(formData.get('city') || '').trim(),
+      postal_code: String(formData.get('postal_code') || '').trim(),
+      google_situation: String(googleSituation),
+      google_email: String(formData.get('google_account_email') || '').trim(),
+      google_listing_url: String(formData.get('google_listing_url') || '').trim(),
+      waiver_accepted: waiverCheckbox.checked ? 'oui' : 'non',
+      selected_pack: selectedPack.pack
+    };
+  }
+
+  async function submitNetlifyFormBackup() {
+    try {
+      const formData = new FormData(dossierForm);
+      formData.set('selected_pack', selectedPack.pack);
+      formData.set('city', formPayload.city);
+      formData.set('postal_code', formPayload.postal_code);
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      });
+
+      if (!response.ok) {
+        console.error('Netlify Forms backup failed:', response.status, await response.text());
+      }
+    } catch (error) {
+      console.error('Netlify Forms backup error:', error);
+    }
   }
 
   async function mountEmbeddedCheckout(clientSecret) {
@@ -141,11 +299,14 @@ function initPurchaseTunnel() {
     embeddedCheckout.mount('#checkout');
   }
 
-  async function createCheckoutSession(pack) {
+  async function createCheckoutSession() {
     const response = await fetch('/.netlify/functions/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pack })
+      body: JSON.stringify({
+        pack: selectedPack.pack,
+        formData: formPayload
+      })
     });
 
     const data = await response.json().catch(() => ({}));
@@ -158,7 +319,7 @@ function initPurchaseTunnel() {
   }
 
   async function initializePayment() {
-    if (!selectedPack) {
+    if (!selectedPack || !formPayload) {
       return;
     }
 
@@ -169,7 +330,7 @@ function initPurchaseTunnel() {
     try {
       await teardownEmbeddedCheckout();
       checkoutContainer.innerHTML = '';
-      const clientSecret = await createCheckoutSession(selectedPack.pack);
+      const clientSecret = await createCheckoutSession();
       await mountEmbeddedCheckout(clientSecret);
     } catch (error) {
       paymentError.hidden = false;
@@ -179,45 +340,42 @@ function initPurchaseTunnel() {
     }
   }
 
-  async function openModal() {
+  function openModal() {
     if (!selectedPack) {
       return;
     }
 
     syncSelectedPackSummary();
+    setStep('form');
     lastFocusedElement = document.activeElement;
     modalOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
-    paymentTitle?.focus();
-    await initializePayment();
   }
 
-  async function closeModal(keepSelection = false) {
+  async function closeModal() {
     modalOverlay.hidden = true;
     document.body.style.overflow = '';
-    paymentError.hidden = true;
-    paymentError.textContent = '';
-    loadingState.hidden = true;
+    formFeedback.textContent = '';
+    submitButton.disabled = false;
+    formPayload = null;
+    setStep('form');
     await teardownEmbeddedCheckout();
     checkoutContainer.innerHTML = '';
 
     if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
       lastFocusedElement.focus();
     }
-
-    if (!keepSelection) {
-      lastFocusedElement = null;
-    }
   }
 
   function goToOffers() {
-    closeModal(true);
+    closeModal();
     offersSection?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
   stickyBarCta?.addEventListener('click', openModal);
   modalClose?.addEventListener('click', () => closeModal());
   changePackBtn?.addEventListener('click', goToOffers);
+  prevStepBtn?.addEventListener('click', () => setStep('form'));
 
   modalOverlay.addEventListener('click', (event) => {
     if (event.target === modalOverlay) {
@@ -229,6 +387,42 @@ function initPurchaseTunnel() {
     if (event.key === 'Escape' && !modalOverlay.hidden) {
       closeModal();
     }
+  });
+
+  dossierForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!selectedPack || !validateForm()) {
+      return;
+    }
+
+    submitButton.disabled = true;
+    formPayload = buildFormPayload();
+
+    try {
+      await submitNetlifyFormBackup();
+      setStep('payment');
+      await initializePayment();
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  dossierForm?.querySelectorAll('input').forEach((input) => {
+    input.addEventListener('input', () => {
+      input.classList.remove('invalid');
+      if (formFeedback.textContent) {
+        formFeedback.textContent = '';
+      }
+    });
+    input.addEventListener('change', () => {
+      if (input === waiverCheckbox) {
+        waiverBox.classList.remove('invalid');
+      }
+      if (formFeedback.textContent) {
+        formFeedback.textContent = '';
+      }
+    });
   });
 
   modalOverlay.addEventListener('keydown', (event) => {
@@ -270,26 +464,8 @@ function initMerciPage() {
   }
 
   const thanksPack = document.getElementById('thanksPack');
-  const dossierForm = document.getElementById('dossierForm');
-  const dossierSuccess = document.getElementById('dossierSuccess');
-  const dossierSubmit = document.getElementById('dossierSubmit');
-  const waiverCheckbox = document.getElementById('dossierWaiver');
-  const existingListingFields = document.getElementById('dossierExistingFields');
-  const newListingMessage = document.getElementById('dossierNewMessage');
-  const googleAccountEmail = document.getElementById('dossierGoogleEmail');
-  const selectedPackField = document.getElementById('dossierPackField');
-  const sessionIdField = document.getElementById('dossierSessionField');
-
   if (thanksPack) {
     thanksPack.textContent = `Votre pack ${label.name} est activé.`;
-  }
-
-  if (selectedPackField) {
-    selectedPackField.value = pack;
-  }
-
-  if (sessionIdField) {
-    sessionIdField.value = sessionId;
   }
 
   const conversionKey = `purchase_tracked_${sessionId}`;
@@ -307,55 +483,6 @@ function initMerciPage() {
     });
     sessionStorage.setItem(conversionKey, '1');
   }
-
-  function updateListingFields() {
-    const selectedStatus = dossierForm?.querySelector('input[name="google_listing_status"]:checked')?.value;
-    const isExisting = selectedStatus === 'existing';
-    const isNew = selectedStatus === 'new';
-
-    existingListingFields.hidden = !isExisting;
-    newListingMessage.hidden = !isNew;
-    googleAccountEmail.required = isExisting;
-  }
-
-  function syncSubmitState() {
-    dossierSubmit.disabled = !waiverCheckbox.checked;
-  }
-
-  dossierForm?.querySelectorAll('input[name="google_listing_status"]').forEach((input) => {
-    input.addEventListener('change', updateListingFields);
-  });
-
-  waiverCheckbox?.addEventListener('change', syncSubmitState);
-  syncSubmitState();
-
-  dossierForm?.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    if (!waiverCheckbox.checked) {
-      return;
-    }
-
-    dossierSubmit.disabled = true;
-
-    try {
-      const formData = new FormData(dossierForm);
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString()
-      });
-
-      dossierForm.hidden = true;
-      dossierSuccess.hidden = false;
-    } catch (_) {
-      dossierSubmit.disabled = false;
-    }
-  });
-
-  dossierForm?.querySelectorAll('input').forEach((input) => {
-    input.addEventListener('input', () => input.classList.remove('invalid'));
-  });
 }
 
 initGoogleAdsMode();

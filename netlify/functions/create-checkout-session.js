@@ -17,6 +17,28 @@ function getPriceIdForPack(pack) {
   return envKey ? process.env[envKey] : null;
 }
 
+function sanitizeMetadata(formData = {}) {
+  const keys = [
+    'full_name',
+    'business_name',
+    'phone',
+    'city',
+    'postal_code',
+    'google_situation',
+    'google_email',
+    'google_listing_url',
+    'waiver_accepted'
+  ];
+
+  return keys.reduce((acc, key) => {
+    const value = formData[key];
+    if (typeof value === 'string' && value.trim()) {
+      acc[key] = value.trim().slice(0, 500);
+    }
+    return acc;
+  }, {});
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return {
@@ -28,7 +50,7 @@ exports.handler = async (event) => {
 
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-    const { pack } = JSON.parse(event.body || '{}');
+    const { pack, formData = {} } = JSON.parse(event.body || '{}');
     const packLabel = PACK_LABELS[pack];
     const priceId = getPriceIdForPack(pack);
 
@@ -49,6 +71,7 @@ exports.handler = async (event) => {
     }
 
     const origin = event.headers.origin || `https://${event.headers.host}`;
+    const formMetadata = sanitizeMetadata(formData);
 
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
@@ -56,7 +79,8 @@ exports.handler = async (event) => {
       return_url: `${origin}/merci.html?pack=${pack}&session_id={CHECKOUT_SESSION_ID}`,
       metadata: {
         pack,
-        pack_label: packLabel
+        pack_label: packLabel,
+        ...formMetadata
       },
       line_items: [
         {

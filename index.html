@@ -324,18 +324,95 @@
 </div>
 
 <div class="modal-overlay" id="modalOverlay" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-toolbar">
       <button class="modal-nav modal-nav-pack" id="changePackBtn" type="button">← Changer de pack</button>
+      <button class="modal-nav modal-nav-prev" id="prevStepBtn" type="button" hidden>← Précédent</button>
       <button class="modal-close" id="modalClose" type="button" aria-label="Fermer la fenêtre">✕</button>
     </div>
 
     <p class="modal-pack-banner" id="modalPackBanner">Vous choisissez : <strong id="modalPackSummary">Essentiel · 69€/mois</strong></p>
 
-    <div class="modal-payment">
+    <div id="stepForm" class="modal-step is-active">
       <div class="modal-head">
-        <p class="eyebrow">Paiement sécurisé</p>
-        <h2 id="paymentTitle" tabindex="-1">Finalisez votre abonnement</h2>
+        <p class="eyebrow">Étape 1 sur 2</p>
+        <h2 id="modalTitle" tabindex="-1">Vos informations</h2>
+        <p class="modal-lead">Remplissez ce formulaire, puis passez au paiement sécurisé.</p>
+      </div>
+
+      <form id="dossierForm" class="onboarding-form" name="pack-local-dossier" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="pack-local-dossier">
+        <input type="hidden" name="selected_pack" id="selectedPackField">
+        <p class="hidden-honeypot">
+          <label>Ne pas remplir ce champ : <input name="bot-field"></label>
+        </p>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Nom &amp; prénom du responsable <abbr class="required" title="obligatoire">*</abbr></span>
+            <input type="text" id="fullName" name="full_name" autocomplete="name" required>
+          </label>
+          <label class="field">
+            <span>Nom de l'établissement <abbr class="required" title="obligatoire">*</abbr></span>
+            <input type="text" id="businessName" name="business_name" autocomplete="organization" required>
+          </label>
+          <label class="field">
+            <span>Téléphone <abbr class="required" title="obligatoire">*</abbr></span>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+          </label>
+          <label class="field">
+            <span>Ville <abbr class="required" title="obligatoire">*</abbr></span>
+            <input type="text" id="city" name="city" autocomplete="address-level2" required>
+          </label>
+          <label class="field">
+            <span>Code postal <abbr class="required" title="obligatoire">*</abbr></span>
+            <input type="text" id="postalCode" name="postal_code" autocomplete="postal-code" required>
+          </label>
+        </div>
+
+        <fieldset class="choice-group">
+          <legend>Votre situation Google <abbr class="required" title="obligatoire">*</abbr></legend>
+          <label class="choice-card">
+            <input type="radio" name="google_listing_status" value="existing" required>
+            <span>J'ai déjà une fiche Google</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="google_listing_status" value="new" required>
+            <span>Je n'ai pas encore de fiche Google (création de zéro)</span>
+          </label>
+        </fieldset>
+
+        <div id="existingListingFields" class="conditional-block" hidden>
+          <label class="field">
+            <span>Email Google associé au compte de votre fiche <abbr class="required google-email-star" title="obligatoire" hidden>*</abbr></span>
+            <input type="email" id="googleAccountEmail" name="google_account_email" autocomplete="off">
+          </label>
+          <label class="field">
+            <span>Lien de votre fiche Google (optionnel)</span>
+            <input type="url" id="googleListingUrl" name="google_listing_url" placeholder="https://maps.google.com/...">
+          </label>
+        </div>
+
+        <div id="newListingMessage" class="info-box" hidden>
+          <p>Nous créerons votre fiche Google pour vous. Une vérification Google sera nécessaire ensuite (par courrier, téléphone ou vidéo selon les cas) — nous vous guidons à chaque étape.</p>
+        </div>
+
+        <label class="waiver-box" id="waiverBox">
+          <input type="checkbox" id="waiverCheckbox" name="waiver_accepted" value="oui">
+          <span>Je demande expressément que l'exécution du service commence immédiatement, et je reconnais renoncer à mon droit de rétractation de 14 jours une fois le service commencé (<a href="cgv.html" target="_blank" rel="noopener">voir CGV</a>). <abbr class="required" title="obligatoire">*</abbr></span>
+        </label>
+
+        <p class="form-feedback" id="formFeedback" aria-live="polite"></p>
+        <p class="required-note">* Champs obligatoires</p>
+        <button class="btn btn-gradient btn-block" id="submitButton" type="submit">Continuer vers le paiement →</button>
+      </form>
+    </div>
+
+    <div id="stepPayment" class="modal-step" hidden>
+      <div class="modal-head">
+        <p class="eyebrow">Étape 2 sur 2</p>
+        <h2 id="paymentTitle" tabindex="-1">Paiement sécurisé</h2>
+        <p class="modal-lead">Réglez votre abonnement pour activer votre pack.</p>
       </div>
 
       <div class="loading-state" id="loadingState" hidden>
