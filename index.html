@@ -225,14 +225,12 @@
               <p class="stat-value blue trust-badge-value" data-counter data-counter-target="800" data-counter-suffix="+">800+</p>
               <div class="trust-badge-copy">
                 <p class="trust-badge-label">entreprises accompagnées avant Pack Local</p>
-                <p class="trust-badge-note">Grâce à l'expertise du fondateur en SEO local, avant le lancement de Pack Local sous sa forme actuelle.</p>
               </div>
             </div>
             <div class="trust-counter">
               <p class="stat-value blue trust-badge-value" data-counter data-counter-target="99" data-counter-suffix="%">99%</p>
               <div class="trust-badge-copy">
                 <p class="trust-badge-label">clients satisfaits</p>
-                <p class="trust-badge-note">Avant le lancement de Pack Local, grâce à l'expertise du fondateur.</p>
               </div>
             </div>
           </div>
@@ -259,19 +257,14 @@
     <div class="wrap">
       <p class="eyebrow">Offres</p>
       <h2 class="section-title section-title-wide reveal">SEO Local — Pour être N°1 sur Google Maps</h2>
-      <!-- URGENCY_SLOTS : modifier data-premium-slots pour ajuster le nombre affiché -->
-      <p class="urgency-banner reveal" data-premium-slots="3" id="premiumUrgency">
-        <span class="urgency-dot" aria-hidden="true"></span>
-        <span><strong id="premiumSlotsLabel">3</strong> places restantes ce mois-ci pour le Premium</span>
-      </p>
       <div class="pricing-grid">
-        <article class="pricing-card reveal" data-pack="essentiel" data-pack-name="Essentiel" data-pack-price="69">
+        <article class="pricing-card pricing-card-essentiel reveal" data-pack="essentiel" data-pack-name="Essentiel" data-pack-price="69">
           <p class="card-kicker">Pour poser des bases solides sur une fiche existante</p>
           <h3>Essentiel</h3>
           <p class="price"><span>69€</span><small>/mois</small></p>
           <ul class="feature-list">
             <li>Mise en place initiale de votre fiche (catégories, description, horaires, photos)</li>
-            <li>5 avis 5 étoiles garantis par mois</li>
+            <li class="feature-star feature-star-essentiel"><span class="feature-star-label">⭐ 5 avis 5 étoiles garantis par mois</span></li>
             <li>Réponse à tous les avis que vous recevez</li>
             <li>2 publications sur votre fiche chaque mois</li>
             <li>Rapport simple chaque mois</li>
@@ -280,29 +273,37 @@
           <button class="btn btn-outline btn-block plan-cta" type="button">Choisir cette formule</button>
         </article>
 
-        <article class="pricing-card featured reveal" data-pack="boost" data-pack-name="Boost" data-pack-price="99">
-          <p class="featured-badge">⭐ Le plus choisi</p>
-          <p class="card-kicker">Pour obtenir plus d'avis et plus de visibilité, sans y passer de temps</p>
-          <h3>Boost</h3>
-          <p class="price"><span>99€</span><small>/mois</small></p>
+        <article class="pricing-card featured pricing-card-boost reveal" data-pack="boost" data-pack-name="Boost" data-pack-price="99">
+          <p class="featured-badge">⭐ LE PLUS CHOISI</p>
+          <div class="boost-card-header">
+            <p class="boost-card-title">🚀 Boost</p>
+            <p class="boost-card-hook">Plus d'<em class="highlight-stars">avis 5 étoiles</em>. Plus de visibilité. Plus de clients.</p>
+          </div>
+          <div class="price-row">
+            <p class="price"><span>99€</span><small>/mois</small></p>
+            <p class="value-chip">⭐ Meilleur rapport visibilité / prix</p>
+          </div>
           <p class="includes">Tout Essentiel +</p>
           <ul class="feature-list">
-            <li>10 avis 5 étoiles garantis par mois</li>
+            <li class="feature-star feature-star-boost">
+              <span class="feature-star-label">⭐ <strong>10 AVIS 5 ÉTOILES / MOIS</strong></span>
+            </li>
             <li>Réponse à vos avis sous 48h</li>
             <li>4 publications par mois</li>
             <li>Un appel vidéo de 15 minutes chaque mois</li>
             <li>Site vitrine .fr ou .com inclus (page professionnelle pour booster votre fiche Google et votre commerce)</li>
           </ul>
-          <button class="btn btn-gradient btn-block plan-cta" type="button">Démarrer mon accompagnement</button>
+          <p class="pricing-promise">🏆 Plus d'avis 5 étoiles = une meilleure visibilité sur Google</p>
+          <button class="btn btn-gradient btn-block plan-cta btn-boost-cta" type="button">Démarrer mon accompagnement</button>
         </article>
 
-        <article class="pricing-card reveal" data-pack="premium" data-pack-name="Premium" data-pack-price="179">
+        <article class="pricing-card pricing-card-premium reveal" data-pack="premium" data-pack-name="Premium" data-pack-price="179">
           <p class="card-kicker">Pour un accompagnement complet, avec un interlocuteur dédié</p>
           <h3>Premium</h3>
           <p class="price"><span>179€</span><small>/mois</small></p>
           <p class="includes">Tout Boost +</p>
           <ul class="feature-list">
-            <li>20 avis 5 étoiles garantis par mois</li>
+            <li class="feature-star feature-star-premium"><span class="feature-star-label">⭐ 20 avis 5 étoiles garantis par mois</span></li>
             <li>Réponse à vos avis sous 24h</li>
             <li>8 publications par mois</li>
             <li>Un interlocuteur dédié + réponses prioritaires par WhatsApp</li>
