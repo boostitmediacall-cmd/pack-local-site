@@ -322,17 +322,29 @@ h3{font-size:1.35rem;}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;}
 
 .trust-badge{
+  margin:4px 0 26px;
+  max-width:100%;
+}
+
+.trust-counters{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:20px 28px;
+  max-width:40rem;
+}
+
+.trust-counter{
   display:flex;
   align-items:flex-start;
   gap:16px 18px;
-  max-width:34rem;
-  margin:4px 0 26px;
+  min-width:0;
 }
 
 .trust-badge-value{
   flex:0 0 auto;
   margin-bottom:0;
   line-height:1;
+  font-variant-numeric:tabular-nums;
 }
 
 .trust-badge-copy{
@@ -352,6 +364,12 @@ h3{font-size:1.35rem;}
   color:var(--grey);
   font-size:.88rem;
   line-height:1.45;
+}
+
+@media (max-width:720px){
+  .trust-counters{
+    grid-template-columns:1fr;
+  }
 }
 
 .trust-line{
