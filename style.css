@@ -698,6 +698,17 @@ h3{font-size:1.35rem;}
   color:var(--grey);
   max-width:68ch;
 }
+.legal-content ul{
+  margin:0 0 12px;
+  padding-left:1.2rem;
+  color:var(--grey);
+  max-width:68ch;
+}
+.legal-content li{margin-bottom:8px;}
+.legal-content code{
+  font-family:"JetBrains Mono",monospace;
+  font-size:.88em;
+}
 
 .waiver-box a{
   color:var(--blue);
@@ -1038,6 +1049,113 @@ h3{font-size:1.35rem;}
 .ads-mode .burger{display:none !important;}
 
 .ads-mode .whatsapp-fab{display:none !important;}
+
+/* Cookie consent banner */
+.cookie-banner{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:45;
+  padding:16px;
+  pointer-events:none;
+}
+
+.cookie-banner[hidden]{display:none;}
+
+.cookie-banner-card{
+  pointer-events:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px 28px;
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px 22px;
+  border:1px solid rgba(228,230,233,.9);
+  border-radius:24px;
+  background:rgba(255,255,255,.96);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(14px);
+}
+
+.cookie-banner-copy{min-width:0;flex:1 1 18rem;}
+
+.cookie-banner-title{
+  margin:0 0 6px;
+  font-family:"Fraunces",serif;
+  font-size:1.05rem;
+  font-weight:600;
+}
+
+.cookie-banner-text{
+  margin:0 0 8px;
+  color:var(--grey);
+  font-size:.95rem;
+  line-height:1.45;
+  max-width:62ch;
+}
+
+.cookie-banner-link{
+  color:var(--blue);
+  font-weight:600;
+  font-size:.9rem;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.cookie-banner-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  flex:0 0 auto;
+}
+
+.cookie-banner-btn{
+  min-width:7.5rem;
+  justify-content:center;
+}
+
+body.cookie-banner-visible{
+  padding-bottom:140px;
+}
+
+body.cookie-banner-visible .whatsapp-fab{
+  bottom:150px;
+}
+
+body.cookie-banner-visible.sticky-visible .sticky-bar{
+  bottom:160px;
+}
+
+@media (max-width:720px){
+  .cookie-banner-card{
+    flex-direction:column;
+    align-items:stretch;
+    border-radius:20px;
+    padding:18px;
+  }
+
+  .cookie-banner-actions{
+    width:100%;
+  }
+
+  .cookie-banner-btn{
+    flex:1 1 calc(50% - 5px);
+  }
+
+  body.cookie-banner-visible{
+    padding-bottom:220px;
+  }
+
+  body.cookie-banner-visible .whatsapp-fab{
+    bottom:230px;
+  }
+
+  body.cookie-banner-visible.sticky-visible .sticky-bar{
+    bottom:240px;
+  }
+}
 
 /* Landing Google Ads (demarrer.html) */
 .lp-ads .lp-header-inner{
