@@ -298,6 +298,39 @@ h3{font-size:1.35rem;}
 
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;}
 
+.trust-badge{
+  display:flex;
+  align-items:flex-start;
+  gap:16px 18px;
+  max-width:34rem;
+  margin:4px 0 26px;
+}
+
+.trust-badge-value{
+  flex:0 0 auto;
+  margin-bottom:0;
+  line-height:1;
+}
+
+.trust-badge-copy{
+  min-width:0;
+  padding-top:4px;
+}
+
+.trust-badge-label{
+  margin:0 0 6px;
+  color:var(--ink);
+  font-weight:600;
+  line-height:1.35;
+}
+
+.trust-badge-note{
+  margin:0;
+  color:var(--grey);
+  font-size:.88rem;
+  line-height:1.45;
+}
+
 .trust-line{
   display:flex;
   flex-wrap:wrap;
