@@ -1884,9 +1884,28 @@ body.cookie-banner-visible.sticky-visible .sticky-bar{
 
   .mobile-cta-primary,
   .mobile-cta-whatsapp{
-    flex:1 1 0;
     justify-content:center;
     min-height:48px;
+  }
+
+  .mobile-cta-primary{
+    flex:1 1 0;
+  }
+
+  .mobile-cta-whatsapp{
+    flex:0 0 auto;
+    width:48px;
+    min-width:48px;
+    padding:0;
+    color:#25D366;
+    border-color:rgba(37,211,102,.35);
+  }
+
+  .mobile-cta-whatsapp:hover,
+  .mobile-cta-whatsapp:focus-visible{
+    color:#128C7E;
+    border-color:rgba(18,140,126,.45);
+    background:#f0fdf4;
   }
 
   body.has-mobile-cta{
