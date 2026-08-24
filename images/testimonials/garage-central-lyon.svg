@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" role="img" aria-label="Logo Garage Central Lyon">
+  <rect width="84" height="84" rx="42" fill="#EEF4FE"/>
+  <path d="M22 48h40l-4-14H26l-4 14z" fill="#4285F4"/>
+  <circle cx="30" cy="50" r="5" fill="#14161A"/>
+  <circle cx="54" cy="50" r="5" fill="#14161A"/>
+  <path d="M28 34h12l3 6H25l3-6z" fill="#34A853"/>
+</svg>

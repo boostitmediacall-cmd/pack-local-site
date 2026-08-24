@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84" role="img" aria-label="Logo Brasserie Le Gabriel Marseille">
+  <rect width="84" height="84" rx="42" fill="#FEF6E0"/>
+  <path d="M30 28h24v6c0 4-3 7-6 8v14h-12V42c-3-1-6-4-6-8v-6z" fill="#FBBC05"/>
+  <path d="M28 28h28" stroke="#14161A" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M34 56h16" stroke="#EA4335" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

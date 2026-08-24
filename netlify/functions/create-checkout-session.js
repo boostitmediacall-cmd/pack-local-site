@@ -3,13 +3,15 @@ const Stripe = require('stripe');
 const PACK_LABELS = {
   essentiel: 'Essentiel',
   boost: 'Boost',
-  premium: 'Premium'
+  premium: 'Premium',
+  'fiche-google': 'Création Fiche Google'
 };
 
 const PRICE_ENV_KEYS = {
   essentiel: 'STRIPE_PRICE_ESSENTIEL',
   boost: 'STRIPE_PRICE_BOOST',
-  premium: 'STRIPE_PRICE_PREMIUM'
+  premium: 'STRIPE_PRICE_PREMIUM',
+  'fiche-google': 'STRIPE_PRICE_FICHE_GOOGLE'
 };
 
 function getPriceIdForPack(pack) {
@@ -27,7 +29,18 @@ function sanitizeMetadata(formData = {}) {
     'google_situation',
     'google_email',
     'google_listing_url',
-    'waiver_accepted'
+    'waiver_accepted',
+    /* fiche-google */
+    'category_main',
+    'category_secondary',
+    'has_address',
+    'street',
+    'service_zone',
+    'phone_business',
+    'website',
+    'contact_email',
+    'contact_phone',
+    'hours'
   ];
 
   return keys.reduce((acc, key) => {
@@ -76,7 +89,9 @@ exports.handler = async (event) => {
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
       mode: 'subscription',
-      return_url: `${origin}/merci.html?pack=${pack}&session_id={CHECKOUT_SESSION_ID}`,
+      return_url: pack === 'fiche-google'
+        ? `${origin}/merci-fiche-google.html?session_id={CHECKOUT_SESSION_ID}`
+        : `${origin}/merci.html?pack=${pack}&session_id={CHECKOUT_SESSION_ID}`,
       metadata: {
         pack,
         pack_label: packLabel,
